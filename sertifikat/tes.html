@@ -46,51 +46,31 @@
             position: relative;
             width: 100%;
             aspect-ratio: 16/9;
-            overflow: hidden;
             border-radius: 1rem;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-        }
-
-        .certificate-slide {
-            display: none;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .certificate-slide.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .slider-container {
             overflow-x: auto;
+            overflow-y: hidden;
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
 
-        .slider-container::-webkit-scrollbar {
+        .certificate-slider::-webkit-scrollbar {
             display: none;
         }
 
         .slider-wrapper {
             display: flex;
-            gap: 0;
+            height: 100%;
         }
 
         .certificate-slide {
             flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             scroll-snap-align: start;
+            user-select: none;
         }
 
         .slider-dots {
@@ -107,16 +87,56 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(99, 102, 241, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .dot.active {
-            background: white;
+            background: #6366f1;
             width: 30px;
             border-radius: 6px;
         }
+
+        .dot:hover {
+            background: rgba(99, 102, 241, 0.6);
+        }
+
+        /* Auto Download Progress Bar */
+        .download-progress {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+
+/* Certificate Details Card Border */
+.certificate-details-card {
+    border: 1px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+}
     </style>
 </head>
 <body class="bg-gray-50">
@@ -125,10 +145,8 @@
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <a href="#home" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                        <span class="text-primary font-bold text-xl">P</span>
-                    </div>
-                    <span class="text-white text-2xl font-bold">Portfolio</span>
+
+                    <span class="text-white text-2xl font-bold">Nain Nadika</span>
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-8">
@@ -186,36 +204,40 @@
 
             <!-- Certificate Slider -->
             <div class="max-w-5xl mx-auto mb-12">
-                <div class="certificate-slider slider-container">
+                <div class="certificate-slider" id="certificateSlider">
                     <div class="slider-wrapper">
                         <!-- Certificate Images -->
                         <img src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=1200&h=675&fit=crop" 
                              alt="Certificate 1" 
-                             class="certificate-slide">
+                             class="certificate-slide"
+                             draggable="false">
                         <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&h=675&fit=crop" 
                              alt="Certificate 2" 
-                             class="certificate-slide">
+                             class="certificate-slide"
+                             draggable="false">
                         <img src="https://images.unsplash.com/photo-1590012314607-cda9d9b699ae?w=1200&h=675&fit=crop" 
                              alt="Certificate 3" 
-                             class="certificate-slide">
+                             class="certificate-slide"
+                             draggable="false">
                         <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=675&fit=crop" 
                              alt="Certificate 4" 
-                             class="certificate-slide">
+                             class="certificate-slide"
+                             draggable="false">
                     </div>
-
-                    <!-- Dots -->
-                    <div class="slider-dots">
-                        <span class="dot active" onclick="scrollToSlide(0)"></span>
-                        <span class="dot" onclick="scrollToSlide(1)"></span>
-                        <span class="dot" onclick="scrollToSlide(2)"></span>
-                        <span class="dot" onclick="scrollToSlide(3)"></span>
-                    </div>
+                </div>
+                
+                <!-- Dots -->
+                <div class="flex justify-center gap-3 mt-6">
+                    <span class="dot active" onclick="scrollToSlide(0)"></span>
+                    <span class="dot" onclick="scrollToSlide(1)"></span>
+                    <span class="dot" onclick="scrollToSlide(2)"></span>
+                    <span class="dot" onclick="scrollToSlide(3)"></span>
                 </div>
             </div>
 
             <!-- Certificate Details -->
             <div class="max-w-4xl mx-auto">
-                <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+                <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 certificate-details-card">
                     <!-- Certificate Title -->
                     <div class="text-center mb-8 pb-8 border-b border-gray-200">
                         <div class="inline-block bg-primary/10 px-6 py-2 rounded-full mb-4">
@@ -358,10 +380,8 @@
         <div class="container mx-auto px-6">
             <div class="text-center">
                 <div class="flex items-center justify-center space-x-3 mb-4">
-                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">P</span>
-                    </div>
-                    <span class="text-2xl font-bold">Portfolio</span>
+
+                    <span class="text-2xl font-bold">Nain Nadika</span>
                 </div>
                 <p class="text-gray-400 mb-6">
                     Membangun solusi digital yang inovatif dan berkualitas tinggi
@@ -382,7 +402,7 @@
                 </div>
                 <div class="border-t border-gray-800 pt-6">
                     <p class="text-gray-400 text-sm">
-                        &copy; 2025 John Doe Portfolio. Dibuat dengan <i class="fas fa-heart text-red-500 mx-1"></i> dan kopi
+                        &copy; 2025 Nain Nadika Portfolio. Dibuat dengan <i class="fas fa-heart text-red-500 mx-1"></i> dan kopi
                     </p>
                 </div>
             </div>
@@ -422,7 +442,7 @@
         });
 
         // Certificate Slider with Scroll
-        const sliderContainer = document.querySelector('.slider-container');
+        const sliderContainer = document.getElementById('certificateSlider');
         const slides = document.querySelectorAll('.certificate-slide');
         const dots = document.querySelectorAll('.dot');
 
@@ -450,7 +470,7 @@
             });
         }
 
-        // Download Certificate Function
+        // Download Certificate Function (Manual Only)
         function downloadCertificate() {
             // Get current active slide
             const scrollLeft = sliderContainer.scrollLeft;
@@ -575,4 +595,4 @@
         }
     </script>
 </body>
-  </html>
+</html>
