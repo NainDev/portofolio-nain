@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Sertifikat - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#6366f1',
+                        'primary-dark': '#4f46e5',
+                        'primary-light': '#818cf8'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .glass-nav {
+            background: rgba(99, 102, 241, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .certificate-slider {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .certificate-slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .certificate-slide.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slider-container {
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider-wrapper {
+            display: flex;
+            gap: 0;
+        }
+
+        .certificate-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar with Glassmorphism -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 shadow-xl border-b border-white/10">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#home" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-primary font-bold text-xl">P</span>
+                    </div>
+                    <span class="text-white text-2xl font-bold">Portfolio</span>
+                </a>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-white hover:text-primary-light transition-colors font-medium">Beranda</a>
+                    <a href="#about" class="text-white hover:text-primary-light transition-colors font-medium">Tentang</a>
+                    <a href="#skills" class="text-white hover:text-primary-light transition-colors font-medium">Keahlian</a>
+                    <a href="#certificates" class="text-white hover:text-primary-light transition-colors font-medium">Sertifikat</a>
+                    <a href="#projects" class="text-white hover:text-primary-light transition-colors font-medium">Projek</a>
+                    <a href="#contact" class="text-white hover:text-primary-light transition-colors font-medium">Kontak</a>
+                </div>
+
+                <button class="md:hidden text-white text-2xl" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed top-0 left-0 w-full h-full gradient-bg z-40 transform -translate-x-full transition-transform duration-300">
+        <div class="flex justify-end p-6">
+            <button class="text-white text-3xl" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="flex flex-col items-center space-y-8 mt-12">
+            <a href="#home" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Beranda</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Tentang</a>
+            <a href="#skills" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Keahlian</a>
+            <a href="#certificates" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Sertifikat</a>
+            <a href="#projects" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Projek</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Kontak</a>
+        </div>
+    </div>
+
+    <!-- Certificate Detail Section -->
+    <section class="pt-32 pb-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <!-- Back Button -->
+            <div class="mb-8">
+                <a href="#certificates" class="inline-flex items-center text-primary hover:text-primary-dark transition-colors font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>Kembali ke Sertifikat
+                </a>
+            </div>
+
+            <!-- Title -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    <i class="fas fa-certificate text-primary mr-2"></i>Detail Sertifikat
+                </h1>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    Lihat detail lengkap sertifikat profesional yang telah diperoleh
+                </p>
+            </div>
+
+            <!-- Certificate Slider -->
+            <div class="max-w-5xl mx-auto mb-12">
+                <div class="certificate-slider slider-container">
+                    <div class="slider-wrapper">
+                        <!-- Certificate Images -->
+                        <img src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=1200&h=675&fit=crop" 
+                             alt="Certificate 1" 
+                             class="certificate-slide">
+                        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&h=675&fit=crop" 
+                             alt="Certificate 2" 
+                             class="certificate-slide">
+                        <img src="https://images.unsplash.com/photo-1590012314607-cda9d9b699ae?w=1200&h=675&fit=crop" 
+                             alt="Certificate 3" 
+                             class="certificate-slide">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=675&fit=crop" 
+                             alt="Certificate 4" 
+                             class="certificate-slide">
+                    </div>
+
+                    <!-- Dots -->
+                    <div class="slider-dots">
+                        <span class="dot active" onclick="scrollToSlide(0)"></span>
+                        <span class="dot" onclick="scrollToSlide(1)"></span>
+                        <span class="dot" onclick="scrollToSlide(2)"></span>
+                        <span class="dot" onclick="scrollToSlide(3)"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificate Details -->
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+                    <!-- Certificate Title -->
+                    <div class="text-center mb-8 pb-8 border-b border-gray-200">
+                        <div class="inline-block bg-primary/10 px-6 py-2 rounded-full mb-4">
+                            <span class="text-primary font-semibold">
+                                <i class="fas fa-award mr-2"></i>Sertifikat Profesional
+                            </span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                            Full Stack Web Developer Certification
+                        </h2>
+                        <p class="text-xl text-gray-600">Meta via Coursera</p>
+                    </div>
+
+                    <!-- Certificate Info Grid -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-calendar-alt text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Tanggal Penerbitan</p>
+                                    <p class="font-bold text-gray-900">15 Januari 2024</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-clock text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Durasi Program</p>
+                                    <p class="font-bold text-gray-900">6 Bulan</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-check-circle text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Status</p>
+                                    <p class="font-bold text-gray-900">Terverifikasi</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6">
+                            <div class="flex items-center mb-3">
+                                <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-id-card text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">ID Kredensial</p>
+                                    <p class="font-bold text-gray-900">META-FS-2024-001</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-info-circle text-primary mr-3"></i>Deskripsi Sertifikat
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Sertifikasi Full Stack Web Developer dari Meta adalah program komprehensif yang mencakup pengembangan 
+                            web front-end dan back-end. Program ini dirancang untuk memberikan pemahaman mendalam tentang teknologi 
+                            web modern dan best practices dalam industri.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed">
+                            Melalui program ini, peserta akan mempelajari HTML5, CSS3, JavaScript ES6+, React.js, Node.js, 
+                            Express.js, database management dengan MongoDB dan MySQL, serta deployment dan version control 
+                            menggunakan Git dan GitHub.
+                        </p>
+                    </div>
+
+                    <!-- Skills Covered -->
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-code text-primary mr-3"></i>Keahlian yang Dicakup
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fab fa-html5 mr-1"></i>HTML5
+                            </span>
+                            <span class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fab fa-css3-alt mr-1"></i>CSS3
+                            </span>
+                            <span class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fab fa-js mr-1"></i>JavaScript
+                            </span>
+                            <span class="bg-cyan-100 text-cyan-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fab fa-react mr-1"></i>React.js
+                            </span>
+                            <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fab fa-node mr-1"></i>Node.js
+                            </span>
+                            <span class="bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fas fa-database mr-1"></i>MongoDB
+                            </span>
+                            <span class="bg-pink-100 text-pink-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fas fa-server mr-1"></i>Express.js
+                            </span>
+                            <span class="bg-red-100 text-red-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fab fa-git-alt mr-1"></i>Git & GitHub
+                            </span>
+                            <span class="bg-orange-100 text-orange-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fas fa-cloud mr-1"></i>Deployment
+                            </span>
+                            <span class="bg-teal-100 text-teal-700 px-4 py-2 rounded-full font-medium">
+                                <i class="fas fa-shield-alt mr-1"></i>Web Security
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                        <a href="https://www.coursera.org/account/accomplishments/verify/" target="_blank" class="flex-1 bg-primary text-white text-center py-4 rounded-xl font-semibold hover:bg-primary-dark transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-external-link-alt mr-2"></i>Verifikasi Sertifikat
+                        </a>
+                        <button onclick="downloadCertificate()" class="flex-1 bg-gray-100 text-gray-700 text-center py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all">
+                            <i class="fas fa-download mr-2"></i>Unduh Sertifikat
+                        </button>
+                        <button onclick="shareCertificate()" class="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all transform hover:scale-105">
+                            <i class="fas fa-share-alt mr-2"></i>Bagikan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">P</span>
+                    </div>
+                    <span class="text-2xl font-bold">Portfolio</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    Membangun solusi digital yang inovatif dan berkualitas tinggi
+                </p>
+                <div class="flex justify-center gap-4 mb-6">
+                    <a href="https://github.com" target="_blank" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-all transform hover:scale-110">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-all transform hover:scale-110">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-all transform hover:scale-110">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="https://twitter.com" target="_blank" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-all transform hover:scale-110">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                </div>
+                <div class="border-t border-gray-800 pt-6">
+                    <p class="text-gray-400 text-sm">
+                        &copy; 2025 John Doe Portfolio. Dibuat dengan <i class="fas fa-heart text-red-500 mx-1"></i> dan kopi
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" 
+            onclick="scrollToTop()" 
+            class="hidden fixed bottom-8 right-8 w-14 h-14 gradient-bg rounded-full text-white shadow-2xl hover:shadow-primary/50 transition-all transform hover:scale-110 z-50">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('-translate-x-full');
+        }
+
+        // Scroll to Top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Scroll Event
+        window.addEventListener('scroll', function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.remove('hidden');
+            } else {
+                scrollTopBtn.classList.add('hidden');
+            }
+        });
+
+        // Certificate Slider with Scroll
+        const sliderContainer = document.querySelector('.slider-container');
+        const slides = document.querySelectorAll('.certificate-slide');
+        const dots = document.querySelectorAll('.dot');
+
+        // Update dots on scroll
+        sliderContainer.addEventListener('scroll', () => {
+            const scrollLeft = sliderContainer.scrollLeft;
+            const slideWidth = slides[0].offsetWidth;
+            const currentIndex = Math.round(scrollLeft / slideWidth);
+
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+
+        // Scroll to specific slide when clicking dot
+        function scrollToSlide(index) {
+            const slideWidth = slides[0].offsetWidth;
+            sliderContainer.scrollTo({
+                left: slideWidth * index,
+                behavior: 'smooth'
+            });
+        }
+
+        // Download Certificate Function
+        function downloadCertificate() {
+            // Get current active slide
+            const scrollLeft = sliderContainer.scrollLeft;
+            const slideWidth = slides[0].offsetWidth;
+            const currentIndex = Math.round(scrollLeft / slideWidth);
+            const currentImage = slides[currentIndex].src;
+
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.href = currentImage;
+            link.download = `Sertifikat_Full_Stack_Developer_${currentIndex + 1}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Show success notification
+            showNotification('Sertifikat berhasil diunduh!', 'success');
+        }
+
+        // Share Certificate Function
+        function shareCertificate() {
+            const certificateData = {
+                title: 'Full Stack Web Developer Certification',
+                text: 'Saya telah menyelesaikan sertifikasi Full Stack Web Developer dari Meta via Coursera!',
+                url: window.location.href
+            };
+
+            // Check if Web Share API is supported
+            if (navigator.share) {
+                navigator.share(certificateData)
+                    .then(() => showNotification('Berhasil dibagikan!', 'success'))
+                    .catch((error) => {
+                        if (error.name !== 'AbortError') {
+                            fallbackShare();
+                        }
+                    });
+            } else {
+                fallbackShare();
+            }
+        }
+
+        // Fallback share function for browsers that don't support Web Share API
+        function fallbackShare() {
+            const shareText = 'Full Stack Web Developer Certification - Meta via Coursera';
+            const shareUrl = window.location.href;
+
+            // Copy to clipboard
+            const textToCopy = `${shareText}\n${shareUrl}`;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        showShareOptions();
+                    })
+                    .catch(() => {
+                        showShareOptions();
+                    });
+            } else {
+                showShareOptions();
+            }
+        }
+
+        // Show share options
+        function showShareOptions() {
+            const shareOptions = `
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="shareModal">
+                    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+                        <div class="text-center mb-6">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Bagikan Sertifikat</h3>
+                            <p class="text-gray-600">Pilih platform untuk berbagi</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" class="flex items-center justify-center bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fab fa-facebook mr-2"></i>Facebook
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent('Full Stack Web Developer Certification - Meta via Coursera')}&url=${encodeURIComponent(window.location.href)}" target="_blank" class="flex items-center justify-center bg-sky-500 text-white py-3 rounded-lg hover:bg-sky-600 transition-colors">
+                                <i class="fab fa-twitter mr-2"></i>Twitter
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}" target="_blank" class="flex items-center justify-center bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 transition-colors">
+                                <i class="fab fa-linkedin mr-2"></i>LinkedIn
+                            </a>
+                            <a href="https://wa.me/?text=${encodeURIComponent('Full Stack Web Developer Certification - Meta via Coursera ' + window.location.href)}" target="_blank" class="flex items-center justify-center bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors">
+                                <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                            </a>
+                        </div>
+                        <button onclick="closeShareModal()" class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 transition-colors font-semibold">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', shareOptions);
+        }
+
+        // Close share modal
+        function closeShareModal() {
+            const modal = document.getElementById('shareModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            const notification = document.createElement('div');
+            notification.className = `fixed top-24 right-6 ${bgColor} text-white px-6 py-4 rounded-lg shadow-xl z-50 animate-fade-in`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-3 text-xl"></i>
+                    <span class="font-semibold">${message}</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+    </script>
+</body>
+  </html>
