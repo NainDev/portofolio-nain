@@ -81,6 +81,24 @@
         }
     </style>
 </head>
+<!-- Custom Alert Modal -->
+<div id="customAlert" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform scale-95 transition-all duration-300" id="alertBox">
+        <div id="alertHeader" class="p-6 rounded-t-2xl">
+            <div class="flex items-center justify-center mb-4">
+                <div id="alertIcon" class="w-16 h-16 rounded-full flex items-center justify-center">
+                </div>
+            </div>
+            <h3 id="alertTitle" class="text-2xl font-bold text-center mb-2"></h3>
+            <p id="alertMessage" class="text-center"></p>
+        </div>
+        <div class="p-6 pt-0">
+            <button onclick="closeCustomAlert()" class="w-full py-3 rounded-lg font-semibold transition-colors" id="alertButton">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
 <body class="bg-gray-50">
     <!-- Navbar with Glassmorphism -->
     <nav class="glass-nav fixed top-0 left-0 right-0 z-50 shadow-xl border-b border-white/10">
@@ -125,6 +143,82 @@
             <a href="#contact" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Kontak</a>
         </div>
     </div>
+    
+<!-- Welcome Popup -->
+<div id="welcomePopup" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="gradient-bg p-6 rounded-t-2xl">
+            <h2 class="text-3xl font-bold text-white text-center">
+                <i class="fas fa-hand-wave mr-2"></i>Selamat Datang!
+            </h2>
+        </div>
+        
+        <div class="p-6">
+            <p class="text-gray-700 text-lg mb-6 text-center">
+                Halo! Terima kasih telah mengunjungi website portfolio saya. Saya Nain Nadika, seorang Web Developer yang passionate dalam menciptakan solusi digital.
+            </p>
+            
+            <div class="bg-blue-50 rounded-lg p-4 mb-6">
+                <p class="text-gray-700 text-center">
+                    <i class="fas fa-rocket text-primary mr-2"></i>
+                    Jelajahi portfolio saya dan lihat projek-projek yang telah saya kerjakan!
+                </p>
+            </div>
+
+            <!-- Optional Survey -->
+            <form id="welcomeSurvey" action="https://formspree.io/f/xyzrjoga" method="POST" class="space-y-4">
+                <div class="border-t border-gray-200 pt-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 text-center">
+                        <i class="fas fa-clipboard-list text-primary mr-2"></i>Survey Singkat (Opsional)
+                    </h3>
+                    <p class="text-sm text-gray-500 text-center mb-4">Bantu saya mengenal pengunjung lebih baik</p>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">Jenis Kelamin</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="gender" value="Laki-laki" class="mr-2">
+                                <span class="text-gray-700">Laki-laki</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="gender" value="Perempuan" class="mr-2">
+                                <span class="text-gray-700">Perempuan</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">Rata-rata Umur</label>
+                        <select name="age_range" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="">Pilih rentang umur</option>
+                            <option value="<18">Kurang dari 18 tahun</option>
+                            <option value="18-24">18-24 tahun</option>
+                            <option value="25-34">25-34 tahun</option>
+                            <option value="35-44">35-44 tahun</option>
+                            <option value="45+">45 tahun ke atas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex items-center mb-4 bg-gray-50 p-3 rounded-lg">
+                    <input type="checkbox" id="dontShowAgain" class="mr-3 w-5 h-5 text-primary">
+                    <label for="dontShowAgain" class="text-gray-700 cursor-pointer select-none">
+                        Jangan tampilkan popup ini lagi
+                    </label>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeWelcomePopup(false)" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
+                        Lewati
+                    </button>
+                    <button type="submit" class="flex-1 gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                        Kirim & Lanjut
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <!-- Hero Section -->
     <section id="home" class="pt-32 pb-20 gradient-bg relative overflow-hidden">
@@ -330,239 +424,401 @@
         </div>
     </section>
 
-    <!-- Certificates Section -->
-    <section id="certificates" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                    <i class="fas fa-certificate text-primary mr-2"></i>Sertifikat & Penghargaan
-                </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-                    Berbagai sertifikasi profesional yang telah saya raih untuk meningkatkan kompetensi
-                </p>
+<!-- Certificates Section -->
+<section id="certificates" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                <i class="fas fa-certificate text-primary mr-2"></i>Sertifikat & Penghargaan
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Berbagai sertifikasi profesional yang telah saya raih untuk meningkatkan kompetensi
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Certificate 1 -->
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 shadow-lg border border-blue-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">2024</span>
+                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-award text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Git & GitHub Mastery</h3>
+                <p class="text-gray-600 mb-3 text-sm">Udemy - Colt Steele</p>
+                <p class="text-sm text-gray-500 mb-4">Version control dengan Git dan kolaborasi tim menggunakan GitHub workflows.</p>
+                <a href="detail-sertifikat.html?id=cert1" class="block w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium text-center">
+                    <i class="fas fa-eye mr-2"></i>Detail Sertifikat
+                </a>
             </div>
 
-<div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl overflow-hidden shadow-lg card-hover">
-    <div class="relative overflow-hidden" style="padding-top: 56.25%;">
-        <img src= "https://files.catbox.moe/fa3813.jpg" 
-             alt="Certificate" 
-             class="absolute top-0 left-0 w-full h-full object-cover">
+            <!-- Certificate 2 -->
+            <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 shadow-lg border border-purple-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-semibold">2024</span>
+                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-award text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">React - The Complete Guide</h3>
+                <p class="text-gray-600 mb-3 text-sm">Udemy - Maximilian Schwarzmüller</p>
+                <p class="text-sm text-gray-500 mb-4">Menguasai React.js dari dasar hingga advanced termasuk hooks, context API, dan Redux.</p>
+                <a href="detail-sertifikat.html?id=cert2" class="block w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium text-center">
+                    <i class="fas fa-eye mr-2"></i>Detail Sertifikat
+                </a>
+            </div>
+
+            <!-- Certificate 3 -->
+            <div class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 shadow-lg border border-pink-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm font-semibold">2023</span>
+                    <div class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-award text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">UI/UX Design Specialization</h3>
+                <p class="text-gray-600 mb-3 text-sm">Coursera - CalArts</p>
+                <p class="text-sm text-gray-500 mb-4">Spesialisasi desain UI/UX dengan fokus pada user research, wireframing, dan prototyping.</p>
+                <a href="detail-sertifikat.html?id=cert3" class="block w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium text-center">
+                    <i class="fas fa-eye mr-2"></i>Detail Sertifikat
+                </a>
+            </div>
+
+            <!-- Certificate 4 -->
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-lg border border-green-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">2023</span>
+                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-award text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">JavaScript Algorithms</h3>
+                <p class="text-gray-600 mb-3 text-sm">freeCodeCamp</p>
+                <p class="text-sm text-gray-500 mb-4">Menguasai algoritma dan struktur data JavaScript untuk problem solving yang efisien.</p>
+                <a href="detail-sertifikat.html?id=cert4" class="block w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium text-center">
+                    <i class="fas fa-eye mr-2"></i>Detail Sertifikat
+                </a>
+            </div>
+
+            <!-- Certificate 5 -->
+            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 shadow-lg border border-emerald-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-semibold">2023</span>
+                    <div class="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-award text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Node.js Developer Course</h3>
+                <p class="text-gray-600 mb-3 text-sm">Udemy - Andrew Mead</p>
+                <p class="text-sm text-gray-500 mb-4">Pengembangan backend dengan Node.js, Express framework, dan integrasi database MongoDB.</p>
+                <a href="detail-sertifikat.html?id=cert5" class="block w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium text-center">
+                    <i class="fas fa-eye mr-2"></i>Detail Sertifikat
+                </a>
+            </div>
+
+            <!-- Certificate 6 -->
+            <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-6 shadow-lg border border-orange-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-semibold">2024</span>
+                    <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-award text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Full Stack Web Developer</h3>
+                <p class="text-gray-600 mb-3 text-sm">Coursera - Meta</p>
+                <p class="text-sm text-gray-500 mb-4">Sertifikasi lengkap dalam pengembangan web full stack mencakup HTML, CSS, JavaScript, React, dan Node.js.</p>
+                <a href="detail-sertifikat.html?id=cert6" class="block w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium text-center">
+                    <i class="fas fa-eye mr-2"></i>Detail Sertifikat
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="p-6">
-        <div class="flex items-center justify-between mb-3">
-            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">2024</span>
-            <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-                <i class="fas fa-award text-xl text-white"></i>
+</section>
+<!-- Projects Section -->
+<section id="projects" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                <i class="fas fa-laptop-code text-primary mr-2"></i>Projek yang Telah Diselesaikan
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Beberapa projek terbaik yang telah saya kerjakan dengan hasil yang memuaskan
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="relative overflow-hidden h-48">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" 
+                         alt="Project" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <i class="fas fa-check mr-1"></i>Selesai
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">E-Commerce Platform</h3>
+                    <p class="text-gray-600 mb-4">
+                        Platform e-commerce modern dengan fitur lengkap termasuk payment gateway dan dashboard admin.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">React</span>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Node.js</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold">MongoDB</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                            <i class="fas fa-eye mr-2"></i>Demo
+                        </a>
+                        <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                            <i class="fab fa-github mr-2"></i>Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="relative overflow-hidden h-48">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop" 
+                         alt="Project" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <i class="fas fa-check mr-1"></i>Selesai
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Portfolio Website</h3>
+                    <p class="text-gray-600 mb-4">
+                        Website portfolio interaktif dengan animasi modern dan desain responsive untuk showcase karya.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold">HTML</span>
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">CSS</span>
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">JavaScript</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                            <i class="fas fa-eye mr-2"></i>Demo
+                        </a>
+                        <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                            <i class="fab fa-github mr-2"></i>Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="relative overflow-hidden h-48">
+                    <img src="https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop" 
+                         alt="Project" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <i class="fas fa-check mr-1"></i>Selesai
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Task Management App</h3>
+                    <p class="text-gray-600 mb-4">
+                        Aplikasi manajemen tugas dengan fitur drag & drop, deadline reminder, dan team collaboration.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-xs font-semibold">React</span>
+                        <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">Redux</span>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Express</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                            <i class="fas fa-eye mr-2"></i>Demo
+                        </a>
+                        <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                            <i class="fab fa-github mr-2"></i>Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="relative overflow-hidden h-48">
+                    <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=400&fit=crop" 
+                         alt="Project" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <i class="fas fa-check mr-1"></i>Selesai
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Weather Dashboard</h3>
+                    <p class="text-gray-600 mb-4">
+                        Dashboard cuaca real-time dengan grafik interaktif dan prediksi 7 hari ke depan.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">JavaScript</span>
+                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">Chart.js</span>
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">API</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                            <i class="fas fa-eye mr-2"></i>Demo
+                        </a>
+                        <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                            <i class="fab fa-github mr-2"></i>Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="relative overflow-hidden h-48">
+                    <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2?w=600&h=400&fit=crop" 
+                         alt="Project" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <i class="fas fa-check mr-1"></i>Selesai
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Restaurant Booking System</h3>
+                    <p class="text-gray-600 mb-4">
+                        Sistem pemesanan restoran online dengan notifikasi real-time dan manajemen meja.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold">Vue.js</span>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Node.js</span>
+                        <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold">MySQL</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                            <i class="fas fa-eye mr-2"></i>Demo
+                        </a>
+                        <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                            <i class="fab fa-github mr-2"></i>Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="relative overflow-hidden h-48">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop" 
+                         alt="Project" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <i class="fas fa-check mr-1"></i>Selesai
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Fitness Tracker App</h3>
+                    <p class="text-gray-600 mb-4">
+                        Aplikasi tracking fitness dengan statistik workout dan goal setting untuk hidup sehat.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-semibold">React Native</span>
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Firebase</span>
+                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">Redux</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                            <i class="fas fa-eye mr-2"></i>Demo
+                        </a>
+                        <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                            <i class="fab fa-github mr-2"></i>Code
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-2">Git & GitHub Mastery</h3>
-        <p class="text-gray-600 mb-3">Udemy - Colt Steele</p>
-        <p class="text-sm text-gray-500 mb-4">Version control dengan Git dan kolaborasi tim menggunakan GitHub workflows.</p>
-        <a href="detail-sertifikat.html?id=cert6" class="block w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition-colors font-medium text-center">
-            <i class="fas fa-eye mr-2"></i>Detail Sertifikat
-        </a>
     </div>
-</div>
+</section>
+<!-- Ebooks Section -->
+<section id="ebooks" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                <i class="fas fa-book text-primary mr-2"></i>E-Book yang Saya Terbitkan
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Kumpulan karya tulis yang telah saya terbitkan dalam format digital
+            </p>
         </div>
-    </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                    <i class="fas fa-laptop-code text-primary mr-2"></i>Projek yang Telah Diselesaikan
-                </h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-                    Beberapa projek terbaik yang telah saya kerjakan dengan hasil yang memuaskan
-                </p>
+        <div class="max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Ebook 1 -->
+                <a href="detail-ebook.html?id=ebook1" class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-primary transition-colors">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-book-open text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Bu, Aku Sendirian</h3>
+                            <p class="text-gray-600 text-sm mb-3">Sebuah kisah tentang perjalanan menemukan jati diri di tengah kesendirian.</p>
+                            <span class="inline-flex items-center text-primary font-semibold text-sm">
+                                Baca Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Ebook 2 -->
+                <a href="detail-ebook.html?id=ebook2" class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-primary transition-colors">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-book-open text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Kota Ini Tak Sama Tanpamu</h3>
+                            <p class="text-gray-600 text-sm mb-3">Cerita tentang kenangan dan nostalgia di sebuah kota penuh makna.</p>
+                            <span class="inline-flex items-center text-primary font-semibold text-sm">
+                                Baca Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Ebook 3 -->
+                <a href="detail-ebook.html?id=ebook3" class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-primary transition-colors">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-book-open text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Jejak Langkah di Ufuk Timur</h3>
+                            <p class="text-gray-600 text-sm mb-3">Petualangan spiritual mencari makna hidup di tanah rantau.</p>
+                            <span class="inline-flex items-center text-primary font-semibold text-sm">
+                                Baca Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Ebook 4 -->
+                <a href="detail-ebook.html?id=ebook4" class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-primary transition-colors">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-book-open text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Senja di Penghujung Waktu</h3>
+                            <p class="text-gray-600 text-sm mb-3">Renungan tentang waktu dan momen berharga dalam kehidupan.</p>
+                            <span class="inline-flex items-center text-primary font-semibold text-sm">
+                                Baca Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover">
-                    <div class="relative overflow-hidden h-48">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" 
-                             alt="Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            <i class="fas fa-check mr-1"></i>Selesai
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">E-Commerce Platform</h3>
-                        <p class="text-gray-600 mb-4">
-                            Platform e-commerce modern dengan fitur lengkap termasuk payment gateway dan dashboard admin.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">React</span>
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Node.js</span>
-                            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold">MongoDB</span>
-                        </div>
-                        <div class="flex gap-3">
-                            <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
-                                <i class="fas fa-eye mr-2"></i>Demo
-                            </a>
-                            <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover">
-                    <div class="relative overflow-hidden h-48">
-                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop" 
-                             alt="Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            <i class="fas fa-check mr-1"></i>Selesai
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Portfolio Website</h3>
-                        <p class="text-gray-600 mb-4">
-                            Website portfolio interaktif dengan animasi modern dan desain responsive untuk showcase karya.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold">HTML</span>
-                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">CSS</span>
-                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">JavaScript</span>
-                        </div>
-                        <div class="flex gap-3">
-                            <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
-                                <i class="fas fa-eye mr-2"></i>Demo
-                            </a>
-                            <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover">
-                    <div class="relative overflow-hidden h-48">
-                        <img src="https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop" 
-                             alt="Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            <i class="fas fa-check mr-1"></i>Selesai
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Task Management App</h3>
-                        <p class="text-gray-600 mb-4">
-                            Aplikasi manajemen tugas dengan fitur drag & drop, deadline reminder, dan team collaboration.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-xs font-semibold">React</span>
-                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">Redux</span>
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Express</span>
-                        </div>
-                        <div class="flex gap-3">
-                            <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
-                                <i class="fas fa-eye mr-2"></i>Demo
-                            </a>
-                            <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover">
-                    <div class="relative overflow-hidden h-48">
-                        <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=400&fit=crop" 
-                             alt="Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            <i class="fas fa-check mr-1"></i>Selesai
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Weather Dashboard</h3>
-                        <p class="text-gray-600 mb-4">
-                            Dashboard cuaca real-time dengan grafik interaktif dan prediksi 7 hari ke depan.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">JavaScript</span>
-                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">Chart.js</span>
-                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">API</span>
-                        </div>
-                        <div class="flex gap-3">
-                            <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
-                                <i class="fas fa-eye mr-2"></i>Demo
-                            </a>
-                            <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover">
-                    <div class="relative overflow-hidden h-48">
-                        <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2?w=600&h=400&fit=crop" 
-                             alt="Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            <i class="fas fa-check mr-1"></i>Selesai
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Restaurant Booking System</h3>
-                        <p class="text-gray-600 mb-4">
-                            Sistem pemesanan restoran online dengan notifikasi real-time dan manajemen meja.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold">Vue.js</span>
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Node.js</span>
-                            <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold">MySQL</span>
-                        </div>
-                        <div class="flex gap-3">
-                            <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
-                                <i class="fas fa-eye mr-2"></i>Demo
-                            </a>
-                            <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover">
-                    <div class="relative overflow-hidden h-48">
-                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop" 
-                             alt="Project" 
-                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            <i class="fas fa-check mr-1"></i>Selesai
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Fitness Tracker App</h3>
-                        <p class="text-gray-600 mb-4">
-                            Aplikasi tracking fitness dengan statistik workout dan goal setting untuk hidup sehat.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-semibold">React Native</span>
-                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Firebase</span>
-                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">Redux</span>
-                        </div>
-                        <div class="flex gap-3">
-                            <a href="#" class="flex-1 bg-primary text-white text-center py-2 rounded-lg hover:bg-primary-dark transition-colors">
-                                <i class="fas fa-eye mr-2"></i>Demo
-                            </a>
-                            <a href="#" class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                                <i class="fab fa-github mr-2"></i>Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <div class="text-center">
+                <a href="semua-ebook.html" class="inline-flex items-center bg-primary text-white px-8 py-4 rounded-full font-semibold hover:bg-primary-dark transition-colors shadow-lg">
+                    <i class="fas fa-book-reader mr-2"></i>Lihat Semua E-Book
+                </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Contact Section -->
+         <!-- Contact Section -->
     <section id="contact" class="py-20 gradient-bg relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl"></div>
@@ -716,49 +972,165 @@
                 scrollTopBtn.classList.add('hidden');
             }
         });
-    // Formspree Integration
-    const form = document.getElementById('contactForm');
-    if (form) {
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitButton = form.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.innerHTML;
-            
-            // Disable button and show loading
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengirim...';
-            
-            const formData = new FormData(form);
-            
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    // Success
-                    alert('✅ Pesan berhasil dikirim! Terima kasih, saya akan segera menghubungi Anda.');
-                    form.reset();
-                } else {
-                    // Error from Formspree
-                    throw new Error('Form submission failed');
-                }
-            } catch (error) {
-                // Error handling
-                alert('❌ Maaf, terjadi kesalahan. Silakan coba lagi atau hubungi langsung via email.');
-            } finally {
-                // Re-enable button
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonText;
-            }
-        });
-    }
 
+// Custom Alert Functions
+function showCustomAlert(type, title, message) {
+    const alertModal = document.getElementById('customAlert');
+    const alertBox = document.getElementById('alertBox');
+    const alertHeader = document.getElementById('alertHeader');
+    const alertIcon = document.getElementById('alertIcon');
+    const alertTitle = document.getElementById('alertTitle');
+    const alertMessage = document.getElementById('alertMessage');
+    const alertButton = document.getElementById('alertButton');
+    
+    // Reset classes
+    alertHeader.className = 'p-6 rounded-t-2xl';
+    alertIcon.className = 'w-16 h-16 rounded-full flex items-center justify-center';
+    alertButton.className = 'w-full py-3 rounded-lg font-semibold transition-colors';
+    
+    if (type === 'success') {
+        alertHeader.classList.add('bg-gradient-to-br', 'from-green-50', 'to-emerald-50');
+        alertIcon.classList.add('bg-green-500');
+        alertIcon.innerHTML = '<i class="fas fa-check text-white text-3xl"></i>';
+        alertButton.classList.add('bg-green-500', 'text-white', 'hover:bg-green-600');
+        alertTitle.className = 'text-2xl font-bold text-center mb-2 text-green-900';
+        alertMessage.className = 'text-center text-green-700';
+    } else if (type === 'error') {
+        alertHeader.classList.add('bg-gradient-to-br', 'from-red-50', 'to-pink-50');
+        alertIcon.classList.add('bg-red-500');
+        alertIcon.innerHTML = '<i class="fas fa-times text-white text-3xl"></i>';
+        alertButton.classList.add('bg-red-500', 'text-white', 'hover:bg-red-600');
+        alertTitle.className = 'text-2xl font-bold text-center mb-2 text-red-900';
+        alertMessage.className = 'text-center text-red-700';
+    }
+    
+    alertTitle.textContent = title;
+    alertMessage.textContent = message;
+    
+    alertModal.style.display = 'flex';
+    setTimeout(() => {
+        alertBox.classList.remove('scale-95');
+        alertBox.classList.add('scale-100');
+    }, 10);
+}
+
+function closeCustomAlert() {
+    const alertModal = document.getElementById('customAlert');
+    const alertBox = document.getElementById('alertBox');
+    
+    alertBox.classList.remove('scale-100');
+    alertBox.classList.add('scale-95');
+    
+    setTimeout(() => {
+        alertModal.style.display = 'none';
+    }, 300);
+}
+
+// Welcome Popup Functions
+function showWelcomePopup() {
+    const dontShow = localStorage.getItem('dontShowWelcome');
+    if (!dontShow) {
+        document.getElementById('welcomePopup').style.display = 'flex';
+    }
+}
+
+function closeWelcomePopup(submitted = false) {
+    const checkbox = document.getElementById('dontShowAgain');
+    if (checkbox.checked) {
+        localStorage.setItem('dontShowWelcome', 'true');
+    }
+    document.getElementById('welcomePopup').style.display = 'none';
+    
+    if (submitted) {
+        showCustomAlert('success', 'Terima Kasih!', 'Survey Anda telah berhasil dikirim. Selamat menjelajahi portfolio saya!');
+    }
+}
+
+// Welcome Survey Form Handler
+const welcomeSurvey = document.getElementById('welcomeSurvey');
+if (welcomeSurvey) {
+    welcomeSurvey.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengirim...';
+        
+        const formData = new FormData(this);
+        formData.append('form_type', 'welcome_survey');
+        
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                closeWelcomePopup(true);
+            } else {
+                throw new Error('Survey submission failed');
+            }
+        } catch (error) {
+            showCustomAlert('error', 'Terjadi Kesalahan', 'Maaf, survey tidak dapat dikirim. Silakan coba lagi nanti.');
+            closeWelcomePopup(false);
+        } finally {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+        }
+    });
+}
+
+// Contact Form Handler with Custom Alert
+const form = document.getElementById('contactForm');
+if (form) {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengirim...';
+        
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                showCustomAlert('success', 'Pesan Terkirim!', 'Terima kasih telah menghubungi saya. Saya akan segera membalas pesan Anda.');
+                form.reset();
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            showCustomAlert('error', 'Gagal Mengirim', 'Maaf, terjadi kesalahan. Silakan coba lagi atau hubungi langsung via email.');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+        }
+    });
+}
+
+// Show popup on page load
+window.addEventListener('load', function() {
+    setTimeout(showWelcomePopup, 1000);
+});
+// Show popup on page load (after a short delay)
+window.addEventListener('load', function() {
+    setTimeout(showWelcomePopup, 1000);
+});
 // Toggle Photo
     function togglePhoto() {
         const photoContainer = document.getElementById('photoContainer');
@@ -827,4 +1199,4 @@
         console.log('%c👋 Halo! Terima kasih telah mengunjungi portfolio saya!', 'color: #6366f1; font-size: 20px; font-weight: bold;');
     </script>
 </body>
-    </html>
+                    </html>
