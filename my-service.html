@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jasa Pembuatan Website Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#6366f1',
+                        'primary-dark': '#4f46e5',
+                        'primary-light': '#818cf8'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .glass-nav {
+            background: rgba(99, 102, 241, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .hero-slider {
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .hero-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hero-slide {
+            scroll-snap-align: start;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .elegant-title {
+            font-family: 'Georgia', 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+
+        .hero-slide-content {
+            aspect-ratio: 16 / 9;
+        }
+
+        .hero-text-shadow {
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 
+                         0 0 20px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar with Glassmorphism -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 shadow-xl border-b border-white/10">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#home" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-primary font-bold text-xl">W</span>
+                    </div>
+                    <span class="text-white text-2xl font-bold">WebJasa</span>
+                </a>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-white hover:text-primary-light transition-colors font-medium">Beranda</a>
+                    <a href="#services" class="text-white hover:text-primary-light transition-colors font-medium">Layanan</a>
+                    <a href="#contact" class="text-white hover:text-primary-light transition-colors font-medium">Kontak</a>
+                </div>
+
+                <button class="md:hidden text-white text-2xl" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed top-0 left-0 w-full h-full gradient-bg z-40 transform -translate-x-full transition-transform duration-300">
+        <div class="flex justify-end p-6">
+            <button class="text-white text-3xl" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="flex flex-col items-center space-y-8 mt-12">
+            <a href="#home" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Beranda</a>
+            <a href="#services" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Layanan</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold hover:text-primary-light transition-colors">Kontak</a>
+        </div>
+    </div>
+
+    <!-- Hero Section with Image Slider -->
+    <section id="home" class="pt-20 px-4 md:px-6 lg:px-8">
+        <div class="container mx-auto">
+            <div class="hero-slider overflow-x-auto flex snap-x rounded-2xl shadow-2xl">
+                <!-- Slide 1 -->
+                <div class="hero-slide min-w-full relative flex-shrink-0">
+                    <div class="hero-slide-content relative">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&h=1080&fit=crop" 
+                             alt="Web Development" 
+                             class="w-full h-full object-cover absolute inset-0">
+                        <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+                            <div class="text-center text-white px-6">
+                                <h1 class="text-4xl md:text-6xl font-bold mb-4 hero-text-shadow">Jasa Pembuatan Website</h1>
+                                <p class="text-xl md:text-2xl mb-8 hero-text-shadow">Profesional & Terpercaya</p>
+                                <a href="#services" class="bg-primary px-8 py-3 rounded-full font-semibold hover:bg-primary-dark transition-all inline-block shadow-lg">
+                                    Lihat Layanan
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="hero-slide min-w-full relative flex-shrink-0">
+                    <div class="hero-slide-content relative">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&h=1080&fit=crop" 
+                             alt="Digital Solutions" 
+                             class="w-full h-full object-cover absolute inset-0">
+                        <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+                            <div class="text-center text-white px-6">
+                                <h1 class="text-4xl md:text-6xl font-bold mb-4 hero-text-shadow">Solusi Digital Terbaik</h1>
+                                <p class="text-xl md:text-2xl mb-8 hero-text-shadow">Untuk Bisnis Anda</p>
+                                <a href="#services" class="bg-primary px-8 py-3 rounded-full font-semibold hover:bg-primary-dark transition-all inline-block shadow-lg">
+                                    Mulai Sekarang
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="hero-slide min-w-full relative flex-shrink-0">
+                    <div class="hero-slide-content relative">
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=1920&h=1080&fit=crop" 
+                             alt="Modern Web Design" 
+                             class="w-full h-full object-cover absolute inset-0">
+                        <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+                            <div class="text-center text-white px-6">
+                                <h1 class="text-4xl md:text-6xl font-bold mb-4 hero-text-shadow">Desain Modern & Responsif</h1>
+                                <p class="text-xl md:text-2xl mb-8 hero-text-shadow">Tampil Beda dari Kompetitor</p>
+                                <a href="#services" class="bg-primary px-8 py-3 rounded-full font-semibold hover:bg-primary-dark transition-all inline-block shadow-lg">
+                                    Konsultasi Gratis
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6 elegant-title">
+                    Layanan Kami
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-primary to-purple-600 mx-auto mb-6"></div>
+                <p class="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                    Kami menghadirkan solusi digital terbaik yang dirancang khusus untuk mengembangkan bisnis Anda. 
+                    Dari website corporate hingga aplikasi custom, setiap layanan dibuat dengan standar profesional tertinggi.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop" 
+                             alt="Company Profile Website" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                            Diskon 20%
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Website Company Profile</h3>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">Website profesional untuk meningkatkan kredibilitas dan citra perusahaan Anda di mata klien</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-2xl font-bold text-primary">Rp 2.500.000</span>
+                            <span class="text-sm text-gray-400 line-through">Rp 3.125.000</span>
+                        </div>
+                        <a href="detail-layanan.html" class="block w-full bg-primary text-white text-center py-2.5 rounded-lg hover:bg-primary-dark transition-colors font-medium">
+                            <i class="fas fa-shopping-cart mr-2"></i>Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&h=600&fit=crop" 
+                             alt="Online Store Website" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Website Toko Online</h3>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">E-commerce lengkap dengan sistem pembayaran terintegrasi dan manajemen produk</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-2xl font-bold text-primary">Rp 5.000.000</span>
+                        </div>
+                        <a href="detail-layanan.html" class="block w-full bg-primary text-white text-center py-2.5 rounded-lg hover:bg-primary-dark transition-colors font-medium">
+                            <i class="fas fa-shopping-cart mr-2"></i>Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=600&fit=crop" 
+                             alt="News Portal Website" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                            Diskon 15%
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Website Portal Berita</h3>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">Platform berita dengan CMS mudah digunakan dan sistem kategori yang lengkap</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-2xl font-bold text-primary">Rp 4.000.000</span>
+                            <span class="text-sm text-gray-400 line-through">Rp 4.700.000</span>
+                        </div>
+                        <a href="detail-layanan.html" class="block w-full bg-primary text-white text-center py-2.5 rounded-lg hover:bg-primary-dark transition-colors font-medium">
+                            <i class="fas fa-shopping-cart mr-2"></i>Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&h=600&fit=crop" 
+                             alt="Personal Blog Website" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Website Blog Personal</h3>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">Blog modern untuk berbagi konten, ide, dan cerita Anda dengan dunia</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-2xl font-bold text-primary">Rp 1.500.000</span>
+                        </div>
+                        <a href="detail-layanan.html" class="block w-full bg-primary text-white text-center py-2.5 rounded-lg hover:bg-primary-dark transition-colors font-medium">
+                            <i class="fas fa-shopping-cart mr-2"></i>Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" 
+                             alt="School Website" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                            Diskon 10%
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Website Sekolah</h3>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">Portal pendidikan dengan fitur lengkap untuk institusi pendidikan modern</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-2xl font-bold text-primary">Rp 3.500.000</span>
+                            <span class="text-sm text-gray-400 line-through">Rp 3.890.000</span>
+                        </div>
+                        <a href="detail-layanan.html" class="block w-full bg-primary text-white text-center py-2.5 rounded-lg hover:bg-primary-dark transition-colors font-medium">
+                            <i class="fas fa-shopping-cart mr-2"></i>Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop" 
+                             alt="Restaurant Website" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Website Restoran</h3>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">Website untuk restoran dengan menu digital dan sistem reservasi online</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-2xl font-bold text-primary">Rp 3.000.000</span>
+                        </div>
+                        <a href="detail-layanan.html" class="block w-full bg-primary text-white text-center py-2.5 rounded-lg hover:bg-primary-dark transition-colors font-medium">
+                            <i class="fas fa-shopping-cart mr-2"></i>Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 7 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop" 
+                             alt="Landing Page Website" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                            Diskon 25%
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Website Landing Page</h3>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">Landing page untuk campaign marketing dan promosi produk atau layanan Anda</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-2xl font-bold text-primary">Rp 1.000.000</span>
+                            <span class="text-sm text-gray-400 line-through">Rp 1.333.000</span>
+                        </div>
+                        <a href="detail-layanan.html" class="block w-full bg-primary text-white text-center py-2.5 rounded-lg hover:bg-primary-dark transition-colors font-medium">
+                            <i class="fas fa-shopping-cart mr-2"></i>Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 8 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop" 
+                             alt="Custom Web Application" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Aplikasi Web Custom</h3>
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">Aplikasi web custom sesuai kebutuhan spesifik bisnis dan industri Anda</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-2xl font-bold text-primary">Mulai Rp 7.000.000</span>
+                        </div>
+                        <a href="detail-layanan.html" class="block w-full bg-primary text-white text-center py-2.5 rounded-lg hover:bg-primary-dark transition-colors font-medium">
+                            <i class="fas fa-shopping-cart mr-2"></i>Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 gradient-bg relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-white mb-4">
+                    <i class="fas fa-envelope text-yellow-300 mr-2"></i>Hubungi Kami
+                </h2>
+                <p class="text-purple-100 text-lg max-w-2xl mx-auto">
+                    Tertarik dengan layanan kami? Hubungi kami sekarang untuk konsultasi gratis!
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                <div>
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-6">
+                        <h3 class="text-2xl font-bold text-white mb-6">Informasi Kontak</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center text-white">
+                                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-envelope text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-purple-100">Email</p>
+                                    <p class="font-semibold">info@webjasa.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-white">
+                                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-phone text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-purple-100">WhatsApp</p>
+                                    <p class="font-semibold">+62 812 3456 7890</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-white">
+                                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-map-marker-alt text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-purple-100">Lokasi</p>
+                                    <p class="font-semibold">Jakarta, Indonesia</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="space-y-4" onsubmit="handleSubmit(event)">
+                    <div>
+                        <label class="block text-white font-medium mb-2">Nama</label>
+                        <input type="text" class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-white" placeholder="Nama Anda">
+                    </div>
+                    <div>
+                        <label class="block text-white font-medium mb-2">Email</label>
+                        <input type="email" class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-white" placeholder="email@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-white font-medium mb-2">Layanan</label>
+                        <select class="w-full px-4 py-3 rounded-lg bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-white">
+                            <option class="text-gray-900">Company Profile</option>
+                            <option class="text-gray-900">Toko Online</option>
+                            <option class="text-gray-900">Portal Berita</option>
+                            <option class="text-gray-900">Blog Personal</option>
+                            <option class="text-gray-900">Website Sekolah</option>
+                            <option class="text-gray-900">Website Restoran</option>
+                            <option class="text-gray-900">Landing Page</option>
+                            <option class="text-gray-900">Aplikasi Custom</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-white font-medium mb-2">Pesan</label>
+                        <textarea rows="4" class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-white" placeholder="Ceritakan kebutuhan Anda..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-white text-primary px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-paper-plane mr-2"></i>Kirim Pesan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">W</span>
+                        </div>
+                        <span class="text-2xl font-bold">WebJasa</span>
+                    </div>
+                    <p class="text-gray-400">
+                        Solusi pembuatan website profesional untuk segala kebutuhan bisnis Anda.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Layanan</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#services" class="hover:text-white transition-colors">Company Profile</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">Toko Online</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">Portal Berita</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">Aplikasi Custom</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Ikuti Kami</h3>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-all transform hover:scale-110">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-6 text-center">
+                <p class="text-gray-400 text-sm">
+                    &copy; 2025 WebJasa. Semua hak dilindungi. Dibuat dengan <i class="fas fa-heart text-red-500 mx-1"></i> untuk kesuksesan bisnis Anda
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" onclick="scrollToTop()" class="hidden fixed bottom-8 right-8 w-14 h-14 gradient-bg rounded-full text-white shadow-2xl hover:shadow-primary/50 transition-all transform hover:scale-110 z-50">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('-translate-x-full');
+        }
+
+        // Scroll to Top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Scroll Event
+        window.addEventListener('scroll', function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.remove('hidden');
+            } else {
+                scrollTopBtn.classList.add('hidden');
+            }
+        });
+
+        // Auto scroll hero slider
+        const heroSlider = document.querySelector('.hero-slider');
+        let currentSlide = 0;
+        const totalSlides = 3;
+
+        function autoScroll() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            heroSlider.scrollTo({
+                left: heroSlider.clientWidth * currentSlide,
+                behavior: 'smooth'
+            });
+        }
+
+        // Auto scroll every 5 seconds
+        setInterval(autoScroll, 5000);
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileMenu();
+            });
+        });
+
+        // Form submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('Terima kasih! Pesan Anda telah dikirim. Kami akan segera menghubungi Anda.');
+            e.target.reset();
+        }
+
+        console.log('%c👋 Selamat datang di WebJasa!', 'color: #6366f1; font-size: 20px; font-weight: bold;');
+    </script>
+</body>
+</html> 
