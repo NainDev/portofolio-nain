@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas XII RPL 1 - SMK Negeri 1 Jakarta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#9333ea',
+                        'primary-dark': '#7e22ce',
+                        'primary-light': '#a855f7'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .glass-nav {
+            background: rgba(147, 51, 234, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Border Effect untuk Navbar */
+        .border-animate {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .border-animate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #9333ea, transparent);
+            animation: border-top 3s linear infinite;
+        }
+
+        .border-animate::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #9333ea, transparent);
+            animation: border-bottom 3s linear infinite;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes border-top {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes border-bottom {
+            0% { right: -100%; }
+            100% { right: 100%; }
+        }
+
+        /* Hover Border Glow untuk Prestasi Cards */
+        .card-prestasi {
+            position: relative;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .card-prestasi::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #9333ea, #a855f7, #c084fc, #9333ea);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-prestasi:hover::before {
+            opacity: 1;
+            animation: border-rotate 2s linear infinite;
+        }
+
+        @keyframes border-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Static Border Glow */
+        .border-glow {
+            position: relative;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .border-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #9333ea, #a855f7, #c084fc, #9333ea);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .border-glow:focus-within::before,
+        .card-interactive:focus-within .border-glow::before {
+            opacity: 1;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 100%);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .masonry-grid {
+            column-count: 2;
+            column-gap: 1rem;
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .masonry-grid {
+                column-count: 3;
+            }
+        }
+
+        /* Student Card Hover Effect */
+        .student-card {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+        }
+
+        .student-card img {
+            transition: transform 0.3s ease;
+        }
+
+        .student-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .student-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 1rem;
+            color: white;
+        }
+
+        .student-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            z-index: 10;
+        }
+/* Tambahkan di bagian <style> */
+.card-prestasi {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-prestasi::before,
+.card-prestasi::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #9333ea, transparent);
+    transition: width 0.3s ease;
+    opacity: 0;
+}
+
+.card-prestasi::before {
+    top: 0;
+    left: 0;
+}
+
+.card-prestasi::after {
+    bottom: 0;
+    right: 0;
+}
+
+.card-prestasi:hover::before,
+.card-prestasi:hover::after {
+    width: 100%;
+    opacity: 1;
+}
+
+.card-prestasi .left-border,
+.card-prestasi .right-border {
+    position: absolute;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, transparent, #9333ea, transparent);
+    transition: height 0.3s ease 0.3s;
+    opacity: 0;
+}
+
+.card-prestasi .left-border {
+    top: 0;
+    left: 0;
+}
+
+.card-prestasi .right-border {
+    bottom: 0;
+    right: 0;
+}
+
+.card-prestasi:hover .left-border,
+.card-prestasi:hover .right-border {
+    height: 100%;
+    opacity: 1;
+}
+/* Tambahkan di bagian <style> */
+.pengurus-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+}
+
+.pengurus-card img {
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: 250px; 
+    object-fit: cover;
+}
+
+
+.pengurus-card:hover img {
+    transform: scale(1.05);
+}
+
+.pengurus-badge {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    z-index: 10;
+}
+
+.pengurus-name {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar with Glassmorphism -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 shadow-xl border-b border-white/10">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#home" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-primary font-bold text-xl">XII</span>
+                    </div>
+                    <span class="text-white text-xl md:text-2xl font-bold">RPL 1</span>
+                </a>
+                
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#home" class="text-white font-medium border-animate px-3 py-2">Beranda</a>
+                    <a href="#prestasi" class="text-white font-medium border-animate px-3 py-2">Prestasi</a>
+                    <a href="#statistik" class="text-white font-medium border-animate px-3 py-2">Statistik</a>
+                    <a href="#struktur" class="text-white font-medium border-animate px-3 py-2">Struktur</a>
+                    <a href="#galeri" class="text-white font-medium border-animate px-3 py-2">Galeri</a>
+                </div>
+
+                <button class="md:hidden text-white text-2xl" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed top-0 left-0 w-full h-full gradient-bg z-40 transform -translate-x-full transition-transform duration-300">
+        <div class="flex justify-end p-6">
+            <button class="text-white text-3xl" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="flex flex-col items-center space-y-8 mt-12">
+            <a href="#home" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold">Beranda</a>
+            <a href="#prestasi" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold">Prestasi</a>
+            <a href="#statistik" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold">Statistik</a>
+            <a href="#struktur" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold">Struktur</a>
+            <a href="#galeri" onclick="toggleMobileMenu()" class="text-white text-2xl font-semibold">Galeri</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 gradient-bg relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center text-white animate-fade-in">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4">
+                    Kelas XII RPL 1
+                </h1>
+                <p class="text-xl md:text-2xl mb-6 text-purple-100">
+                    Rekayasa Perangkat Lunak
+                </p>
+                <p class="text-lg mb-8 text-purple-50 leading-relaxed max-w-3xl mx-auto">
+                    Kelas yang terdiri dari siswa-siswi berbakat dan berprestasi dalam bidang teknologi informasi dan pemrograman. 
+                    Kami berkomitmen untuk terus belajar, berinovasi, dan menciptakan karya digital yang bermanfaat.
+                </p>
+                <a href="#prestasi" class="inline-block bg-white text-primary px-8 py-3 rounded-full font-semibold shadow-lg border-glow">
+                    <i class="fas fa-arrow-down mr-2"></i>Baca Selengkapnya
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prestasi Section (Silver Theme) -->
+<section id="prestasi" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                <i class="fas fa-trophy text-primary mr-2"></i>Prestasi Kelas
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Berbagai pencapaian membanggakan yang telah diraih oleh kelas kami
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-lg card-prestasi">
+                <span class="left-border"></span>
+                <span class="right-border"></span>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Juara 2</span>
+                    <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-medal text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">Lomba Web Development</h3>
+                <p class="text-gray-600 mb-3 text-sm">Tingkat Provinsi - 2024</p>
+                <p class="text-sm text-gray-500">Tim kelas berhasil meraih runner-up dalam kompetisi web development tingkat provinsi.</p>
+            </div>
+
+            <div class="bg-gray-100 rounded-xl p-6 shadow-lg card-prestasi">
+                <span class="left-border"></span>
+                <span class="right-border"></span>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Juara 2</span>
+                    <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-medal text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">Hackathon Mobile App</h3>
+                <p class="text-gray-600 mb-3 text-sm">Tingkat Nasional - 2024</p>
+                <p class="text-sm text-gray-500">Aplikasi mobile yang dikembangkan meraih peringkat kedua dalam hackathon nasional.</p>
+            </div>
+
+            <div class="bg-gray-100 rounded-xl p-6 shadow-lg card-prestasi">
+                <span class="left-border"></span>
+                <span class="right-border"></span>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Juara 2</span>
+                    <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-medal text-xl text-white"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">UI/UX Design Competition</h3>
+                <p class="text-gray-600 mb-3 text-sm">Tingkat Regional - 2024</p>
+                <p class="text-sm text-gray-500">Desain interface yang modern dan user-friendly meraih posisi runner-up.</p>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Statistik Section (Horizontal, No Background) -->
+    <section id="statistik" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    <i class="fas fa-chart-bar text-primary mr-2"></i>Statistik Kelas
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    Data dan informasi mengenai kelas kami
+                </p>
+            </div>
+
+<div class="flex flex-wrap justify-center items-center gap-6 md:gap-12">
+    <div class="text-center">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+            <i class="fas fa-users text-3xl text-primary"></i>
+        </div>
+        <h3 class="text-4xl font-bold text-primary mb-1">36</h3>
+        <p class="text-gray-600 font-medium text-sm">Total Murid</p>
+    </div>
+
+    <div class="text-center">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+            <i class="fas fa-mars text-3xl text-blue-600"></i>
+        </div>
+        <h3 class="text-4xl font-bold text-blue-600 mb-1">20</h3>
+        <p class="text-gray-600 font-medium text-sm">Laki-laki</p>
+    </div>
+
+    <div class="text-center">
+        <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-2">
+            <i class="fas fa-venus text-3xl text-pink-600"></i>
+        </div>
+        <h3 class="text-4xl font-bold text-pink-600 mb-1">16</h3>
+        <p class="text-gray-600 font-medium text-sm">Perempuan</p>
+    </div>
+
+    <div class="text-center">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+            <i class="fas fa-trophy text-3xl text-green-600"></i>
+        </div>
+        <h3 class="text-4xl font-bold text-green-600 mb-1">12</h3>
+        <p class="text-gray-600 font-medium text-sm">Prestasi</p>
+    </div>
+</div>
+        </div>
+    </section>
+
+    <!-- Struktur Kelas Section -->
+    <section id="struktur" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    <i class="fas fa-sitemap text-primary mr-2"></i>Struktur Kelas
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    Pengurus dan anggota kelas XII RPL 1
+                </p>
+            </div>
+
+
+            <!-- Murid Kelas (Grid 2 kolom mobile, 4 kolom desktop) -->
+            <div>
+                <div id="studentGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Students will be loaded here -->
+                </div>
+                <div id="loadMoreContainer" class="text-center mt-8 hidden">
+                    <button onclick="loadMoreStudents()" class="bg-primary text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-primary-dark transition-colors">
+                        <i class="fas fa-plus-circle mr-2"></i>Muat Lainnya
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeri Section -->
+    <section id="galeri" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    <i class="fas fa-images text-primary mr-2"></i>Galeri Kenangan
+                </h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    Momen-momen berharga bersama kelas XII RPL 1
+                </p>
+            </div>
+
+            <div class="masonry-grid">
+                <div class="masonry-item">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border-glow card-interactive">
+                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=600&h=400&fit=crop" 
+                             alt="Kegiatan Kelas" 
+                             class="w-full h-auto">
+                        <div class="p-4">
+                            <p class="text-gray-700 font-medium">Kegiatan Pembelajaran</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="masonry-item">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border-glow card-interactive">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=500&fit=crop" 
+                             alt="Presentasi" 
+                             class="w-full h-auto">
+                        <div class="p-4">
+                            <p class="text-gray-700 font-medium">Presentasi Projek</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="masonry-item">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border-glow card-interactive">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=350&fit=crop" 
+                             alt="Diskusi" 
+                             class="w-full h-auto">
+                        <div class="p-4">
+                            <p class="text-gray-700 font-medium">Diskusi Kelompok</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="masonry-item">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border-glow card-interactive">
+                        <img src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=600&h=450&fit=crop" 
+                             alt="Workshop" 
+                             class="w-full h-auto">
+                        <div class="p-4">
+                            <p class="text-gray-700 font-medium">Workshop Coding</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="masonry-item">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border-glow card-interactive">
+                        <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&h=400&fit=crop" 
+                             alt="Event" 
+                             class="w-full h-auto">
+                        <div class="p-4">
+                            <p class="text-gray-700 font-medium">Acara Kelas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="masonry-item">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg border-glow card-interactive">
+                        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&h=500&fit=crop" 
+                             alt="Praktikum" 
+                             class="w-full h-auto">
+                        <div class="p-4">
+                            <p class="text-gray-700 font-medium">Praktikum Lab</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">XII</span>
+                    </div>
+                    <span class="text-2xl font-bold">Kelas XII RPL 1</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    SMK Negeri 1 Jakarta - Rekayasa Perangkat Lunak
+                </p>
+                <div class="flex justify-center gap-4 mb-6">
+                    <a href="#" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center border-glow">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center border-glow">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center border-glow">
+                        <i class="fab fa-facebook text-xl"></i>
+                    </a>
+                    <a href="#" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center border-glow">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                </div>
+                <div class="border-t border-gray-800 pt-6">
+                    <p class="text-gray-400 text-sm">
+                        &copy; 2025 Kelas XII RPL 1. Dibuat dengan <i class="fas fa-heart text-red-500 mx-1"></i> oleh siswa-siswi RPL 1
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" 
+            onclick="scrollToTop()" 
+            class="hidden fixed bottom-8 right-8 w-14 h-14 gradient-bg rounded-full text-white shadow-2xl z-50 border-glow">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </button>
+
+    <script>
+        // Student Data
+        const students = [
+            { name: 'Andi Pratama', badge: 'Absen 1', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop' },
+            { name: 'Budi Santoso', badge: 'Absen 2', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop' },
+            { name: 'Citra Dewi', badge: 'Absen 3', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop' },
+            { name: 'Dimas Adi', badge: 'Absen 4', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop' },
+            { name: 'Eka Putri', badge: 'Absen 5', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop' },
+            { name: 'Fajar Rahman', badge: 'Absen 6', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop' },
+            { name: 'Gita Sari', badge: 'Absen 7', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop' },
+            { name: 'Hendra Wijaya', badge: 'Absen 8', img: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=400&fit=crop' },
+            { name: 'Indah Lestari', badge: 'Absen 9', img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop' },
+            { name: 'Joko Susilo', badge: 'Absen 10', img: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&h=400&fit=crop' },
+            { name: 'Kartika Sari', badge: 'Absen 11', img: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop' },
+            { name: 'Lukman Hakim', badge: 'Absen 12', img: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop' },
+            { name: 'Maya Anggraini', badge: 'Absen 13', img: 'https://images.unsplash.com/photo-1502767089025-6572583495f9?w=400&h=400&fit=crop' },
+            { name: 'Nugroho Adi', badge: 'Absen 14', img: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=400&fit=crop' },
+            { name: 'Olivia Putri', badge: 'Absen 15', img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop' },
+            { name: 'Prasetyo Budi', badge: 'Absen 16', img: 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=400&h=400&fit=crop' },
+            { name: 'Qori Amalia', badge: 'Absen 17', img: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=400&fit=crop' },
+            { name: 'Rahmat Hidayat', badge: 'Absen 18', img: 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400&h=400&fit=crop' },
+            { name: 'Sinta Dewi', badge: 'Absen 19', img: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop' },
+            { name: 'Teguh Santoso', badge: 'Absen 20', img: 'https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=400&h=400&fit=crop' },
+            { name: 'Umi Kalsum', badge: 'Absen 21', img: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=400&h=400&fit=crop' },
+            { name: 'Vino Adi', badge: 'Absen 22', img: 'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=400&h=400&fit=crop' },
+            { name: 'Winda Sari', badge: 'Absen 23', img: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&h=400&fit=crop' },
+            { name: 'Xavier Putra', badge: 'Absen 24', img: 'https://images.unsplash.com/photo-1545167622-3a6ac756afa4?w=400&h=400&fit=crop' },
+            { name: 'Yuni Astuti', badge: 'Absen 25', img: 'https://images.unsplash.com/photo-1542596768-5d1d21f1cf98?w=400&h=400&fit=crop' },
+            { name: 'Zaki Rahman', badge: 'Absen 26', img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop' }
+        ];
+
+        
+
+        let displayedStudents = 0;
+        const studentsPerLoad = 8;
+
+        // Ganti fungsi loadStudents dengan ini
+function loadStudents(count) {
+    const grid = document.getElementById('studentGrid');
+    const end = Math.min(displayedStudents + count, students.length);
+    
+    for (let i = displayedStudents; i < end; i++) {
+        const student = students[i];
+        const card = document.createElement('div');
+        card.className = 'student-card rounded-xl overflow-hidden shadow-lg border-glow card-interactive';
+        card.innerHTML = `
+            <img src="${student.img}" alt="${student.name}" class="w-full h-full object-cover">
+            <div class="student-badge">
+                <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                    ${student.badge}
+                </span>
+            </div>
+            <div class="absolute bottom-2 right-2">
+                <p class="text-white text-xs font-bold bg-black bg-opacity-70 px-2 py-1 rounded">${student.name}</p>
+            </div>
+        `;
+        grid.appendChild(card);
+    }
+    
+    displayedStudents = end;
+    
+    const loadMoreBtn = document.getElementById('loadMoreContainer');
+    if (displayedStudents < students.length) {
+        loadMoreBtn.classList.remove('hidden');
+    } else {
+        loadMoreBtn.classList.add('hidden');
+    }
+}
+
+        function loadMoreStudents() {
+            loadStudents(studentsPerLoad);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('-translate-x-full');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        window.addEventListener('scroll', function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.remove('hidden');
+            } else {
+                scrollTopBtn.classList.add('hidden');
+            }
+        });
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileMenu();
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', function() {
+            loadStudents(studentsPerLoad);
+        });
+
+        console.log('%c🎓 Website Kelas XII RPL 1', 'color: #9333ea; font-size: 20px; font-weight: bold;');
+        console.log('%c💜 Selamat datang di website kelas kami!', 'color: #a855f7; font-size: 14px;');
+    </script>
+</body>
+</html>
