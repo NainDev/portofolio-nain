@@ -1187,17 +1187,25 @@ window.addEventListener('load', function() {
 });
 // Toggle Photo
     function togglePhoto() {
-        const photoContainer = document.getElementById('photoContainer');
-        const photoButton = document.getElementById('photoButton');
-        
-        if (photoContainer.classList.contains('hidden')) {
-            photoContainer.classList.remove('hidden');
-            photoButton.classList.add('hidden');
-        } else {
-            photoContainer.classList.add('hidden');
-            photoButton.classList.remove('hidden');
-        }
+    const photoContainer = document.getElementById('photoContainer');
+    const photoButton = document.getElementById('photoButton');
+    const aboutSection = document.getElementById('about');
+
+    if (photoContainer.classList.contains('hidden')) {
+        photoContainer.classList.remove('hidden');
+        photoButton.classList.add('hidden');
+
+        // scroll smooth ke section tentang saya
+        setTimeout(() => {
+            aboutSection.scrollIntoView({
+                behavior: "smooth"
+            });
+        }, 300);
+    } else {
+        photoContainer.classList.add('hidden');
+        photoButton.classList.remove('hidden');
     }
+}
         // Close mobile menu when clicking a link
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.addEventListener('click', () => {
