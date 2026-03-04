@@ -271,16 +271,31 @@
                     </div>
                 </div>
                 
-<div class="flex justify-center">
-    <button onclick="togglePhoto()" id="photoButton" class="bg-white text-primary px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg">
-        <i class="fas fa-camera mr-2"></i>Lihat Foto Saya
+<div class="flex justify-center relative">
+    
+    <!-- Tombol -->
+    <button onclick="togglePhoto()" 
+        id="photoButton"
+        class="bg-white/90 backdrop-blur-md text-primary px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2">
+        <i class="fas fa-camera"></i>
+        Lihat Foto Saya
     </button>
-    <div id="photoContainer" class="hidden w-80 h-80 overflow-hidden shadow-2xl">
-        <img src="https://files.catbox.moe/14wn5y.webp" 
-             alt="Profile" 
-             class="w-full h-full object-cover">
+
+    <!-- Foto -->
+    <div id="photoContainer"
+        class="hidden relative w-80 h-80 rounded-3xl overflow-hidden shadow-2xl border border-white/20 backdrop-blur-md">
+
+        <!-- Glow effect -->
+        <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur opacity-40"></div>
+
+        <!-- Image -->
+        <img src="https://files.catbox.moe/14wn5y.webp"
+            alt="Profile"
+            class="relative w-full h-full object-cover rounded-3xl">
+
     </div>
-</divdiv>
+
+</div>
             </div>
         </div>
     </section>
