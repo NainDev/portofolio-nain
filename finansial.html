@@ -6,7 +6,7 @@
   <title>FinansiaPro – Kelola Keuangan Pribadi</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -38,7 +38,7 @@
       color: #1e3a5f;
     }
 
-    h1,h2,h3,.font-display { font-family: 'Playfair Display', serif; }
+    h1,h2,h3,.font-display { font-family: 'Poppins', sans-serif; font-weight: 700; }
 
     /* Sidebar */
     #sidebar {
@@ -259,34 +259,90 @@
       <!-- ═══════════════ DASHBOARD ═══════════════ -->
       <div id="page-dashboard" class="page active fade-up">
 
-        <!-- Stat Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-7">
-          <!-- Saldo -->
-          <div class="stat-card p-5 text-white" style="background:linear-gradient(135deg,#0f2a5e,#1a56db)">
-            <div class="text-blue-200 text-xs font-semibold uppercase tracking-widest mb-3">Saldo Saat Ini</div>
-            <div class="font-display text-2xl mb-1" id="stat-saldo">Rp 0</div>
-            <div class="text-blue-200 text-xs">Total akumulasi</div>
-            <div class="absolute top-4 right-4 opacity-20">
-              <i data-lucide="wallet" style="width:48px;height:48px"></i>
+        <!-- ✦ Greeting Banner -->
+        <div class="mb-7 rounded-3xl overflow-hidden relative" style="background:linear-gradient(120deg,#0c1f5e 0%,#1a4fd8 45%,#3b82f6 75%,#93c5fd 100%);padding:28px 32px;box-shadow:0 12px 48px rgba(26,86,219,0.28)">
+          <!-- Decorative circles -->
+          <div style="position:absolute;top:-40px;right:60px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none"></div>
+          <div style="position:absolute;bottom:-30px;right:20px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,0.09);pointer-events:none"></div>
+          <div style="position:absolute;top:50%;right:200px;transform:translateY(-50%);width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none"></div>
+          <div class="relative flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(186,216,255,0.85);font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Selamat Datang Kembali 👋</div>
+              <div style="font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(22px,4vw,32px);color:#ffffff;line-height:1.2;margin-bottom:6px">Halo, Nain! 🌟</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:13.5px;color:rgba(186,216,255,0.8);max-width:380px">Pantau keuanganmu hari ini dengan lebih cerdas dan terencana.</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:18px;padding:14px 22px;text-align:center;backdrop-filter:blur(8px)">
+              <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(186,216,255,0.8);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Hari Ini</div>
+              <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:#fff" id="greeting-date"></div>
             </div>
           </div>
-          <!-- Pemasukan -->
-          <div class="stat-card p-5 text-white" style="background:linear-gradient(135deg,#065f46,#059669)">
-            <div class="text-emerald-100 text-xs font-semibold uppercase tracking-widest mb-3">Total Pemasukan</div>
-            <div class="font-display text-2xl mb-1" id="stat-in">Rp 0</div>
-            <div class="text-emerald-100 text-xs" id="stat-in-count">0 transaksi</div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-7">
+
+          <!-- Saldo — deep navy-to-cyan -->
+          <div class="stat-card p-5 text-white" style="background:linear-gradient(145deg,#0b1e56 0%,#1340c4 50%,#2e80f5 85%,#7ec8f9 100%);box-shadow:0 8px 32px rgba(11,30,86,0.38)">
+            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 60%);border-radius:20px;pointer-events:none"></div>
+            <div style="position:absolute;top:-18px;right:-18px;width:90px;height:90px;border-radius:50%;background:rgba(126,200,249,0.15);pointer-events:none"></div>
+            <div class="relative">
+              <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(186,220,255,0.82);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+                <i data-lucide="wallet" style="width:13px;height:13px"></i> Saldo Saat Ini
+              </div>
+              <div class="font-display" style="font-size:clamp(18px,2.5vw,24px);margin-bottom:4px;line-height:1.2" id="stat-saldo">Rp 0</div>
+              <div style="font-size:11px;color:rgba(186,220,255,0.65);font-family:'DM Sans',sans-serif">Total akumulasi</div>
+              <div style="margin-top:12px;height:3px;border-radius:4px;background:rgba(255,255,255,0.15);overflow:hidden">
+                <div style="height:100%;width:70%;border-radius:4px;background:linear-gradient(90deg,rgba(255,255,255,0.5),rgba(126,200,249,0.8))"></div>
+              </div>
+            </div>
           </div>
-          <!-- Pengeluaran -->
-          <div class="stat-card p-5 text-white" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)">
-            <div class="text-red-100 text-xs font-semibold uppercase tracking-widest mb-3">Total Pengeluaran</div>
-            <div class="font-display text-2xl mb-1" id="stat-out">Rp 0</div>
-            <div class="text-red-100 text-xs" id="stat-out-count">0 transaksi</div>
+
+          <!-- Masuk — emerald-teal premium -->
+          <div class="stat-card p-5 text-white" style="background:linear-gradient(145deg,#013d29 0%,#057a55 45%,#10b981 80%,#6ee7b7 100%);box-shadow:0 8px 32px rgba(1,61,41,0.35)">
+            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 60%);border-radius:20px;pointer-events:none"></div>
+            <div style="position:absolute;top:-18px;right:-18px;width:90px;height:90px;border-radius:50%;background:rgba(110,231,183,0.15);pointer-events:none"></div>
+            <div class="relative">
+              <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(167,243,208,0.85);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+                <i data-lucide="trending-up" style="width:13px;height:13px"></i> Total Pemasukan
+              </div>
+              <div class="font-display" style="font-size:clamp(18px,2.5vw,24px);margin-bottom:4px;line-height:1.2" id="stat-in">Rp 0</div>
+              <div style="font-size:11px;color:rgba(167,243,208,0.65);font-family:'DM Sans',sans-serif" id="stat-in-count">0 transaksi</div>
+              <div style="margin-top:12px;height:3px;border-radius:4px;background:rgba(255,255,255,0.15);overflow:hidden">
+                <div style="height:100%;width:80%;border-radius:4px;background:linear-gradient(90deg,rgba(255,255,255,0.5),rgba(110,231,183,0.8))"></div>
+              </div>
+            </div>
           </div>
-          <!-- Transaksi -->
-          <div class="stat-card p-5 text-white" style="background:linear-gradient(135deg,#1e1b4b,#4f46e5)">
-            <div class="text-indigo-100 text-xs font-semibold uppercase tracking-widest mb-3">Total Transaksi</div>
-            <div class="font-display text-2xl mb-1" id="stat-total">0</div>
-            <div class="text-indigo-100 text-xs">Semua waktu</div>
+
+          <!-- Keluar — crimson-rose premium -->
+          <div class="stat-card p-5 text-white" style="background:linear-gradient(145deg,#4a0010 0%,#c0132e 45%,#f43f5e 80%,#fda4af 100%);box-shadow:0 8px 32px rgba(74,0,16,0.38)">
+            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 60%);border-radius:20px;pointer-events:none"></div>
+            <div style="position:absolute;top:-18px;right:-18px;width:90px;height:90px;border-radius:50%;background:rgba(253,164,175,0.15);pointer-events:none"></div>
+            <div class="relative">
+              <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(254,205,211,0.85);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+                <i data-lucide="trending-down" style="width:13px;height:13px"></i> Total Pengeluaran
+              </div>
+              <div class="font-display" style="font-size:clamp(18px,2.5vw,24px);margin-bottom:4px;line-height:1.2" id="stat-out">Rp 0</div>
+              <div style="font-size:11px;color:rgba(254,205,211,0.65);font-family:'DM Sans',sans-serif" id="stat-out-count">0 transaksi</div>
+              <div style="margin-top:12px;height:3px;border-radius:4px;background:rgba(255,255,255,0.15);overflow:hidden">
+                <div style="height:100%;width:55%;border-radius:4px;background:linear-gradient(90deg,rgba(255,255,255,0.5),rgba(253,164,175,0.8))"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transaksi — violet-indigo premium -->
+          <div class="stat-card p-5 text-white" style="background:linear-gradient(145deg,#1a0550 0%,#5b21b6 45%,#8b5cf6 80%,#c4b5fd 100%);box-shadow:0 8px 32px rgba(26,5,80,0.38)">
+            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 60%);border-radius:20px;pointer-events:none"></div>
+            <div style="position:absolute;top:-18px;right:-18px;width:90px;height:90px;border-radius:50%;background:rgba(196,181,253,0.15);pointer-events:none"></div>
+            <div class="relative">
+              <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(221,214,254,0.85);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+                <i data-lucide="activity" style="width:13px;height:13px"></i> Total Transaksi
+              </div>
+              <div class="font-display" style="font-size:clamp(18px,2.5vw,24px);margin-bottom:4px;line-height:1.2" id="stat-total">0</div>
+              <div style="font-size:11px;color:rgba(221,214,254,0.65);font-family:'DM Sans',sans-serif">Semua waktu</div>
+              <div style="margin-top:12px;height:3px;border-radius:4px;background:rgba(255,255,255,0.15);overflow:hidden">
+                <div style="height:100%;width:65%;border-radius:4px;background:linear-gradient(90deg,rgba(255,255,255,0.5),rgba(196,181,253,0.8))"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -949,6 +1005,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   // Set default date
   document.getElementById('f-tanggal').value = today();
   document.getElementById('page-date').textContent = todayFmt();
+  const gd = document.getElementById('greeting-date');
+  if(gd) gd.textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
 
   // Init kategori
   setType('masuk');
