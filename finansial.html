@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinansiaPro – Kelola Keuangan Pribadi</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <style>
+    :root {
+      --blue-deep:   #0f2a5e;
+      --blue-mid:    #1a56db;
+      --blue-light:  #60a5fa;
+      --blue-pale:   #eff6ff;
+      --white:       #ffffff;
+      --glass-bg:    rgba(255,255,255,0.72);
+      --glass-border:rgba(148,187,255,0.35);
+      --shadow-blue: 0 8px 32px rgba(26,86,219,0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #e8f0fe 0%, #dbeafe 40%, #f0f7ff 70%, #ffffff 100%);
+      min-height: 100vh;
+      color: #1e3a5f;
+    }
+
+    h1,h2,h3,.font-display { font-family: 'Playfair Display', serif; }
+
+    /* Sidebar */
+    #sidebar {
+      background: linear-gradient(160deg, #0f2a5e 0%, #1a56db 60%, #2563eb 100%);
+      box-shadow: 4px 0 32px rgba(15,42,94,0.25);
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 20px; border-radius: 12px;
+      color: rgba(255,255,255,0.72);
+      cursor: pointer; font-size: 14px; font-weight: 500;
+      transition: all .22s ease;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.12); color:#fff; }
+    .nav-item.active { background: rgba(255,255,255,0.18); color:#fff; font-weight:600;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+
+    /* Glass card */
+    .glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: var(--shadow-blue);
+    }
+
+    /* Stat cards */
+    .stat-card { border-radius: 20px; overflow: hidden; position: relative; }
+    .stat-card::before {
+      content:''; position:absolute; top:-40px; right:-40px;
+      width:130px; height:130px; border-radius:50%;
+      background: rgba(255,255,255,0.12);
+    }
+
+    /* Input styling */
+    .inp {
+      width:100%; border-radius:12px; border:1.5px solid #bfdbfe;
+      padding: 10px 14px; background:#f0f7ff; font-size:14px;
+      color:#1e3a5f; outline:none; transition: border .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .inp:focus { border-color:#1a56db; background:#fff; box-shadow: 0 0 0 3px rgba(26,86,219,0.1); }
+
+    select.inp { appearance:none; cursor:pointer; }
+
+    label.lbl { font-size:13px; font-weight:600; color:#1e3a5f; margin-bottom:4px; display:block; }
+
+    /* Button */
+    .btn-primary {
+      background: linear-gradient(135deg,#1a56db,#2563eb);
+      color:#fff; border:none; border-radius:12px;
+      padding:11px 28px; font-size:14px; font-weight:600;
+      cursor:pointer; transition: all .22s; box-shadow: 0 4px 14px rgba(26,86,219,0.3);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow: 0 8px 20px rgba(26,86,219,0.38); }
+    .btn-primary:active { transform:translateY(0); }
+
+    .btn-danger {
+      background: linear-gradient(135deg,#ef4444,#dc2626);
+      color:#fff; border:none; border-radius:8px;
+      padding:5px 12px; font-size:12px; font-weight:600;
+      cursor:pointer; transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-danger:hover { opacity:.85; }
+
+    /* Badge */
+    .badge-in  { background:#dcfce7; color:#16a34a; border-radius:8px; padding:3px 10px; font-size:12px; font-weight:600; }
+    .badge-out { background:#fee2e2; color:#dc2626; border-radius:8px; padding:3px 10px; font-size:12px; font-weight:600; }
+
+    /* Page sections */
+    .page { display:none; }
+    .page.active { display:block; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:#f0f7ff; }
+    ::-webkit-scrollbar-thumb { background:#93c5fd; border-radius:8px; }
+
+    /* Table */
+    table { width:100%; border-collapse:collapse; }
+    th { text-align:left; font-size:12px; font-weight:600; color:#6b9fd4;
+      text-transform:uppercase; letter-spacing:.04em; padding:10px 14px; border-bottom:1.5px solid #dbeafe; }
+    td { padding:12px 14px; border-bottom:1px solid #f0f7ff; font-size:13.5px; }
+    tr:hover td { background:#f8fbff; }
+    tr:last-child td { border-bottom:none; }
+
+    /* Toast */
+    #toast {
+      position:fixed; bottom:28px; right:28px; z-index:9999;
+      background:linear-gradient(135deg,#1a56db,#2563eb);
+      color:#fff; border-radius:14px; padding:14px 22px;
+      font-size:14px; font-weight:500; box-shadow:0 8px 24px rgba(26,86,219,0.35);
+      transform:translateY(80px); opacity:0; transition:all .35s ease;
+      pointer-events:none;
+    }
+    #toast.show { transform:translateY(0); opacity:1; }
+
+    /* Mobile overlay */
+    #overlay { display:none; position:fixed; inset:0; background:rgba(15,42,94,0.45); z-index:40; }
+
+    /* Gradient text */
+    .grad-text {
+      background: linear-gradient(135deg,#1a56db,#60a5fa);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+
+    /* Animate in */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+    .fade-up { animation: fadeUp .4s ease forwards; }
+
+    /* Progress bar */
+    .prog-bar { height:8px; border-radius:6px; background:#dbeafe; overflow:hidden; }
+    .prog-fill { height:100%; border-radius:6px; background:linear-gradient(90deg,#1a56db,#60a5fa); transition:width .6s ease; }
+
+    /* Responsive */
+    @media(max-width:768px){
+      #sidebar { position:fixed; left:-280px; top:0; bottom:0; z-index:50; transition:left .3s ease; width:260px!important; }
+      #sidebar.open { left:0; }
+      #overlay.show { display:block; }
+      #main-content { margin-left:0!important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Mobile overlay -->
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<div class="flex min-h-screen">
+
+  <!-- ─── SIDEBAR ─── -->
+  <div id="sidebar" class="flex flex-col w-64 min-h-screen py-6 px-4 fixed top-0 left-0 bottom-0 z-50" style="width:260px">
+    <!-- Logo -->
+    <div class="mb-8 px-2">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="text-white font-display text-lg leading-tight">FinansiaPro</div>
+          <div class="text-blue-200 text-xs">Kelola Keuangan Anda</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex flex-col gap-1 flex-1">
+      <div class="nav-item active" onclick="navigate('dashboard')">
+        <i data-lucide="layout-dashboard" style="width:18px;height:18px"></i> Dashboard
+      </div>
+      <div class="nav-item" onclick="navigate('tambah')">
+        <i data-lucide="plus-circle" style="width:18px;height:18px"></i> Tambah Transaksi
+      </div>
+      <div class="nav-item" onclick="navigate('riwayat')">
+        <i data-lucide="list" style="width:18px;height:18px"></i> Riwayat Transaksi
+      </div>
+      <div class="nav-item" onclick="navigate('rekap')">
+        <i data-lucide="calendar-days" style="width:18px;height:18px"></i> Rekap Bulanan
+      </div>
+      <div class="nav-item" onclick="navigate('grafik')">
+        <i data-lucide="bar-chart-2" style="width:18px;height:18px"></i> Grafik & Analisis
+      </div>
+      <div class="nav-item" onclick="navigate('laporan')">
+        <i data-lucide="file-text" style="width:18px;height:18px"></i> Laporan Harian
+      </div>
+    </nav>
+
+    <!-- User profile footer -->
+    <div class="mt-4 pt-4 border-t border-white/15">
+      <div class="flex items-center gap-3 px-2">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center text-white font-bold text-sm">FP</div>
+        <div>
+          <div class="text-white text-sm font-semibold">Pengguna</div>
+          <div class="text-blue-200 text-xs">Data Lokal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MAIN ─── -->
+  <div id="main-content" class="flex-1 min-h-screen" style="margin-left:260px;">
+
+    <!-- Top Bar -->
+    <div class="sticky top-0 z-30 glass border-b border-blue-100/60 px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <!-- Hamburger (mobile) -->
+        <button onclick="toggleSidebar()" class="md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+          <i data-lucide="menu" style="width:20px;height:20px"></i>
+        </button>
+        <div>
+          <h1 id="page-title" class="font-display text-xl text-blue-900">Dashboard</h1>
+          <p class="text-xs text-blue-400" id="page-date"></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2 bg-blue-50 rounded-xl px-4 py-2">
+          <i data-lucide="database" style="width:14px;height:14px;color:#1a56db"></i>
+          <span class="text-xs text-blue-600 font-medium">Data Lokal</span>
+        </div>
+        <button onclick="resetAll()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-red-50 text-red-400 hover:bg-red-100 transition" title="Reset semua data">
+          <i data-lucide="trash-2" style="width:16px;height:16px"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-5 md:p-7 max-w-7xl mx-auto">
+
+      <!-- ═══════════════ DASHBOARD ═══════════════ -->
+      <div id="page-dashboard" class="page active fade-up">
+
+        <!-- Stat Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-7">
+          <!-- Saldo -->
+          <div class="stat-card p-5 text-white" style="background:linear-gradient(135deg,#0f2a5e,#1a56db)">
+            <div class="text-blue-200 text-xs font-semibold uppercase tracking-widest mb-3">Saldo Saat Ini</div>
+            <div class="font-display text-2xl mb-1" id="stat-saldo">Rp 0</div>
+            <div class="text-blue-200 text-xs">Total akumulasi</div>
+            <div class="absolute top-4 right-4 opacity-20">
+              <i data-lucide="wallet" style="width:48px;height:48px"></i>
+            </div>
+          </div>
+          <!-- Pemasukan -->
+          <div class="stat-card p-5 text-white" style="background:linear-gradient(135deg,#065f46,#059669)">
+            <div class="text-emerald-100 text-xs font-semibold uppercase tracking-widest mb-3">Total Pemasukan</div>
+            <div class="font-display text-2xl mb-1" id="stat-in">Rp 0</div>
+            <div class="text-emerald-100 text-xs" id="stat-in-count">0 transaksi</div>
+          </div>
+          <!-- Pengeluaran -->
+          <div class="stat-card p-5 text-white" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)">
+            <div class="text-red-100 text-xs font-semibold uppercase tracking-widest mb-3">Total Pengeluaran</div>
+            <div class="font-display text-2xl mb-1" id="stat-out">Rp 0</div>
+            <div class="text-red-100 text-xs" id="stat-out-count">0 transaksi</div>
+          </div>
+          <!-- Transaksi -->
+          <div class="stat-card p-5 text-white" style="background:linear-gradient(135deg,#1e1b4b,#4f46e5)">
+            <div class="text-indigo-100 text-xs font-semibold uppercase tracking-widest mb-3">Total Transaksi</div>
+            <div class="font-display text-2xl mb-1" id="stat-total">0</div>
+            <div class="text-indigo-100 text-xs">Semua waktu</div>
+          </div>
+        </div>
+
+        <!-- Chart row -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-7">
+          <div class="glass p-5 lg:col-span-2">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-display text-base text-blue-900">Arus Kas 6 Bulan Terakhir</h3>
+              <span class="text-xs text-blue-400 bg-blue-50 px-3 py-1 rounded-full">Bar Chart</span>
+            </div>
+            <canvas id="chartBar" height="200"></canvas>
+          </div>
+          <div class="glass p-5">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-display text-base text-blue-900">Komposisi</h3>
+              <span class="text-xs text-blue-400 bg-blue-50 px-3 py-1 rounded-full">Donut</span>
+            </div>
+            <canvas id="chartDonut" height="180"></canvas>
+            <div class="flex justify-center gap-5 mt-3 text-xs">
+              <span class="flex items-center gap-1"><span style="width:10px;height:10px;border-radius:50%;background:#059669;display:inline-block"></span> Masuk</span>
+              <span class="flex items-center gap-1"><span style="width:10px;height:10px;border-radius:50%;background:#dc2626;display:inline-block"></span> Keluar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaksi terbaru -->
+        <div class="glass p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-display text-base text-blue-900">Transaksi Terbaru</h3>
+            <button onclick="navigate('riwayat')" class="text-xs text-blue-500 hover:text-blue-700 font-medium">Lihat Semua →</button>
+          </div>
+          <div id="recent-list" class="space-y-3">
+            <div class="text-center text-blue-300 py-8 text-sm">Belum ada transaksi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ TAMBAH TRANSAKSI ═══════════════ -->
+      <div id="page-tambah" class="page fade-up">
+        <div class="max-w-xl mx-auto">
+          <div class="glass p-7">
+            <h2 class="font-display text-xl text-blue-900 mb-6">Tambah Transaksi Baru</h2>
+            <!-- Type Toggle -->
+            <div class="flex gap-3 mb-6">
+              <button id="btn-masuk" onclick="setType('masuk')" class="flex-1 py-3 rounded-2xl font-semibold text-sm transition-all"
+                style="background:linear-gradient(135deg,#059669,#16a34a);color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.3)">
+                ✦ Uang Masuk
+              </button>
+              <button id="btn-keluar" onclick="setType('keluar')" class="flex-1 py-3 rounded-2xl font-semibold text-sm transition-all"
+                style="background:#f0f7ff;color:#6b7280;border:1.5px solid #dbeafe">
+                ✦ Uang Keluar
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="lbl">Tanggal</label>
+                <input type="date" id="f-tanggal" class="inp" />
+              </div>
+              <div>
+                <label class="lbl">Jumlah (Rp)</label>
+                <input type="number" id="f-jumlah" class="inp" placeholder="0" min="0" />
+              </div>
+              <div>
+                <label class="lbl">Kategori</label>
+                <select id="f-kategori" class="inp">
+                  <option value="">Pilih Kategori</option>
+                </select>
+              </div>
+              <div>
+                <label class="lbl">Keterangan</label>
+                <input type="text" id="f-ket" class="inp" placeholder="Tulis keterangan transaksi..." />
+              </div>
+              <button onclick="tambahTransaksi()" class="btn-primary w-full mt-2">
+                Simpan Transaksi
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ RIWAYAT ═══════════════ -->
+      <div id="page-riwayat" class="page fade-up">
+        <div class="glass p-5 mb-5">
+          <div class="flex flex-wrap gap-3 items-end">
+            <div class="flex-1 min-w-36">
+              <label class="lbl">Filter Tipe</label>
+              <select id="f-tipe" class="inp" onchange="renderRiwayat()">
+                <option value="">Semua</option>
+                <option value="masuk">Masuk</option>
+                <option value="keluar">Keluar</option>
+              </select>
+            </div>
+            <div class="flex-1 min-w-36">
+              <label class="lbl">Bulan</label>
+              <select id="f-bulan" class="inp" onchange="renderRiwayat()">
+                <option value="">Semua</option>
+              </select>
+            </div>
+            <div class="flex-1 min-w-36">
+              <label class="lbl">Tahun</label>
+              <select id="f-tahun" class="inp" onchange="renderRiwayat()">
+                <option value="">Semua</option>
+              </select>
+            </div>
+            <div class="flex-1 min-w-48">
+              <label class="lbl">Cari</label>
+              <input type="text" id="f-cari" class="inp" placeholder="Cari keterangan..." oninput="renderRiwayat()" />
+            </div>
+          </div>
+        </div>
+
+        <div class="glass overflow-hidden">
+          <div class="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Tipe</th>
+                  <th>Kategori</th>
+                  <th>Keterangan</th>
+                  <th class="text-right">Jumlah</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-riwayat">
+                <tr><td colspan="6" class="text-center text-blue-300 py-10">Belum ada data</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="riwayat-summary" class="px-5 py-4 border-t border-blue-50 flex flex-wrap gap-4 text-sm font-semibold text-blue-800"></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ REKAP BULANAN ═══════════════ -->
+      <div id="page-rekap" class="page fade-up">
+        <div class="flex gap-3 mb-5">
+          <div>
+            <label class="lbl">Pilih Tahun</label>
+            <select id="rekap-tahun" class="inp" onchange="renderRekap()" style="width:140px"></select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" id="rekap-grid">
+          <div class="glass p-8 text-center text-blue-300 col-span-full">Belum ada data untuk ditampilkan</div>
+        </div>
+
+        <!-- Chart rekap -->
+        <div class="glass p-5 mt-5">
+          <h3 class="font-display text-base text-blue-900 mb-4">Tren Bulanan <span id="rekap-tahun-label" class="text-blue-400 text-sm font-normal"></span></h3>
+          <canvas id="chartRekap" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- ═══════════════ GRAFIK ═══════════════ -->
+      <div id="page-grafik" class="page fade-up">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+          <div class="glass p-5">
+            <h3 class="font-display text-base text-blue-900 mb-4">Pengeluaran per Kategori</h3>
+            <canvas id="chartKategori" height="250"></canvas>
+          </div>
+          <div class="glass p-5">
+            <h3 class="font-display text-base text-blue-900 mb-4">Tren Saldo Kumulatif</h3>
+            <canvas id="chartLine" height="250"></canvas>
+          </div>
+        </div>
+        <div class="glass p-5">
+          <h3 class="font-display text-base text-blue-900 mb-4">Distribusi Pemasukan per Kategori</h3>
+          <canvas id="chartKategoriIn" height="180"></canvas>
+        </div>
+      </div>
+
+      <!-- ═══════════════ LAPORAN HARIAN ═══════════════ -->
+      <div id="page-laporan" class="page fade-up">
+        <div class="glass p-5 mb-5">
+          <div class="flex flex-wrap gap-3 items-end">
+            <div>
+              <label class="lbl">Pilih Tanggal</label>
+              <input type="date" id="lap-tanggal" class="inp" onchange="renderLaporan()" style="width:200px" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily summary cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5" id="lap-cards">
+          <div class="glass p-4 text-center">
+            <div class="text-xs text-blue-400 font-semibold uppercase tracking-wider mb-2">Pemasukan Hari Ini</div>
+            <div class="font-display text-xl text-emerald-600" id="lap-in">Rp 0</div>
+          </div>
+          <div class="glass p-4 text-center">
+            <div class="text-xs text-blue-400 font-semibold uppercase tracking-wider mb-2">Pengeluaran Hari Ini</div>
+            <div class="font-display text-xl text-red-500" id="lap-out">Rp 0</div>
+          </div>
+          <div class="glass p-4 text-center">
+            <div class="text-xs text-blue-400 font-semibold uppercase tracking-wider mb-2">Selisih</div>
+            <div class="font-display text-xl" id="lap-net" style="color:#1a56db">Rp 0</div>
+          </div>
+        </div>
+
+        <div class="glass overflow-hidden">
+          <div class="px-5 pt-4 pb-2">
+            <h3 class="font-display text-base text-blue-900">Detail Transaksi</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tipe</th>
+                  <th>Kategori</th>
+                  <th>Keterangan</th>
+                  <th class="text-right">Jumlah</th>
+                </tr>
+              </thead>
+              <tbody id="lap-tbody">
+                <tr><td colspan="4" class="text-center text-blue-300 py-8">Pilih tanggal untuk melihat laporan</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div>
+
+<script>
+// ────────────────────────────────────────────────
+//  DATA LAYER  (localStorage)
+// ────────────────────────────────────────────────
+const DB_KEY = 'finansia_v2';
+let transactions = [];
+
+function save() { localStorage.setItem(DB_KEY, JSON.stringify(transactions)); }
+function load() {
+  try { transactions = JSON.parse(localStorage.getItem(DB_KEY)) || []; }
+  catch { transactions = []; }
+}
+
+// ────────────────────────────────────────────────
+//  CATEGORY CONFIG
+// ────────────────────────────────────────────────
+const CATS = {
+  masuk: ['Gaji','Freelance','Investasi','Hadiah','Bonus','Lainnya'],
+  keluar: ['Makan & Minum','Transport','Belanja','Tagihan','Kesehatan','Hiburan','Pendidikan','Tabungan','Lainnya']
+};
+
+// ────────────────────────────────────────────────
+//  UTILITY
+// ────────────────────────────────────────────────
+const fmt = n => 'Rp ' + Number(n||0).toLocaleString('id-ID');
+const monthName = m => ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][m];
+const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const today = () => new Date().toISOString().split('T')[0];
+const todayFmt = () => new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ────────────────────────────────────────────────
+//  NAVIGATION
+// ────────────────────────────────────────────────
+let currentType = 'masuk';
+const pageMap = {
+  dashboard:'Dashboard', tambah:'Tambah Transaksi',
+  riwayat:'Riwayat Transaksi', rekap:'Rekap Bulanan',
+  grafik:'Grafik & Analisis', laporan:'Laporan Harian'
+};
+
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('page-title').textContent = pageMap[page];
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(n => { if(n.getAttribute('onclick')?.includes("'"+page+"'")) n.classList.add('active'); });
+  closeSidebar();
+  // Trigger renders
+  if(page==='dashboard') renderDashboard();
+  if(page==='riwayat') { initRiwayatFilters(); renderRiwayat(); }
+  if(page==='rekap') { initRekapFilter(); renderRekap(); }
+  if(page==='grafik') renderGrafik();
+  if(page==='laporan') { initLaporan(); renderLaporan(); }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ────────────────────────────────────────────────
+//  TYPE TOGGLE
+// ────────────────────────────────────────────────
+function setType(t) {
+  currentType = t;
+  const bIn = document.getElementById('btn-masuk');
+  const bOut = document.getElementById('btn-keluar');
+  if(t==='masuk') {
+    bIn.style.cssText='flex:1;padding:12px;border-radius:16px;font-weight:600;font-size:14px;cursor:pointer;background:linear-gradient(135deg,#059669,#16a34a);color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.3);border:none;font-family:DM Sans,sans-serif';
+    bOut.style.cssText='flex:1;padding:12px;border-radius:16px;font-weight:600;font-size:14px;cursor:pointer;background:#f0f7ff;color:#6b7280;border:1.5px solid #dbeafe;font-family:DM Sans,sans-serif';
+  } else {
+    bOut.style.cssText='flex:1;padding:12px;border-radius:16px;font-weight:600;font-size:14px;cursor:pointer;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;box-shadow:0 4px 14px rgba(220,38,38,.3);border:none;font-family:DM Sans,sans-serif';
+    bIn.style.cssText='flex:1;padding:12px;border-radius:16px;font-weight:600;font-size:14px;cursor:pointer;background:#f0f7ff;color:#6b7280;border:1.5px solid #dbeafe;font-family:DM Sans,sans-serif';
+  }
+  const sel = document.getElementById('f-kategori');
+  sel.innerHTML = '<option value="">Pilih Kategori</option>' + CATS[t].map(c=>`<option>${c}</option>`).join('');
+}
+
+// ────────────────────────────────────────────────
+//  TAMBAH TRANSAKSI
+// ────────────────────────────────────────────────
+function tambahTransaksi() {
+  const tgl = document.getElementById('f-tanggal').value;
+  const jml = parseFloat(document.getElementById('f-jumlah').value);
+  const kat = document.getElementById('f-kategori').value;
+  const ket = document.getElementById('f-ket').value.trim();
+  if(!tgl || !jml || jml<=0 || !kat) { toast('⚠ Lengkapi semua isian!'); return; }
+  const trx = { id: Date.now(), tanggal: tgl, tipe: currentType, jumlah: jml, kategori: kat, keterangan: ket };
+  transactions.push(trx);
+  save();
+  // Reset form
+  document.getElementById('f-jumlah').value='';
+  document.getElementById('f-ket').value='';
+  toast('✓ Transaksi berhasil disimpan!');
+  renderDashboard();
+}
+
+// ────────────────────────────────────────────────
+//  DASHBOARD
+// ────────────────────────────────────────────────
+let chartBar, chartDonut;
+
+function renderDashboard() {
+  const totalIn  = transactions.filter(t=>t.tipe==='masuk').reduce((a,t)=>a+t.jumlah,0);
+  const totalOut = transactions.filter(t=>t.tipe==='keluar').reduce((a,t)=>a+t.jumlah,0);
+  const saldo    = totalIn - totalOut;
+  const cntIn    = transactions.filter(t=>t.tipe==='masuk').length;
+  const cntOut   = transactions.filter(t=>t.tipe==='keluar').length;
+
+  document.getElementById('stat-saldo').textContent = fmt(saldo);
+  document.getElementById('stat-saldo').style.color = saldo<0?'#fca5a5':'#fff';
+  document.getElementById('stat-in').textContent    = fmt(totalIn);
+  document.getElementById('stat-out').textContent   = fmt(totalOut);
+  document.getElementById('stat-total').textContent = transactions.length;
+  document.getElementById('stat-in-count').textContent  = cntIn+' transaksi';
+  document.getElementById('stat-out-count').textContent = cntOut+' transaksi';
+
+  // Recent
+  const recent = [...transactions].sort((a,b)=>b.tanggal.localeCompare(a.tanggal)).slice(0,5);
+  const rl = document.getElementById('recent-list');
+  if(recent.length===0) {
+    rl.innerHTML='<div class="text-center text-blue-300 py-8 text-sm">Belum ada transaksi. <a href="#" onclick="navigate(\'tambah\')" class="text-blue-500 underline">Tambah sekarang</a></div>';
+  } else {
+    rl.innerHTML = recent.map(t=>`
+      <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-blue-50/60 transition">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          style="background:${t.tipe==='masuk'?'#dcfce7':'#fee2e2'}">
+          <span style="font-size:18px">${t.tipe==='masuk'?'↑':'↓'}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="font-medium text-sm text-blue-900 truncate">${t.keterangan||t.kategori}</div>
+          <div class="text-xs text-blue-400">${t.kategori} · ${fmtTgl(t.tanggal)}</div>
+        </div>
+        <div class="font-semibold text-sm ${t.tipe==='masuk'?'text-emerald-600':'text-red-500'}">
+          ${t.tipe==='masuk'?'+':'-'}${fmt(t.jumlah)}
+        </div>
+      </div>`).join('');
+  }
+
+  // Chart Bar – 6 months
+  const now = new Date();
+  const labels6=[], dataIn=[], dataOut=[];
+  for(let i=5;i>=0;i--) {
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const m=d.getMonth(), y=d.getFullYear();
+    labels6.push(monthName(m)+' '+y.toString().slice(2));
+    dataIn.push(transactions.filter(t=>t.tipe==='masuk'&&new Date(t.tanggal).getMonth()===m&&new Date(t.tanggal).getFullYear()===y).reduce((a,t)=>a+t.jumlah,0));
+    dataOut.push(transactions.filter(t=>t.tipe==='keluar'&&new Date(t.tanggal).getMonth()===m&&new Date(t.tanggal).getFullYear()===y).reduce((a,t)=>a+t.jumlah,0));
+  }
+  if(chartBar) chartBar.destroy();
+  chartBar = new Chart(document.getElementById('chartBar').getContext('2d'),{
+    type:'bar',
+    data:{ labels:labels6, datasets:[
+      {label:'Masuk', data:dataIn, backgroundColor:'rgba(5,150,105,.75)', borderRadius:8, borderSkipped:false},
+      {label:'Keluar', data:dataOut, backgroundColor:'rgba(220,38,38,.65)', borderRadius:8, borderSkipped:false}
+    ]},
+    options:{ plugins:{legend:{display:true,labels:{font:{family:'DM Sans'},boxRadius:6}}}, scales:{y:{ticks:{callback:v=>'Rp'+v.toLocaleString('id-ID'),font:{family:'DM Sans',size:11}},grid:{color:'rgba(148,187,255,.15)'}},x:{ticks:{font:{family:'DM Sans',size:11}},grid:{display:false}}}, responsive:true, maintainAspectRatio:true }
+  });
+
+  // Donut
+  if(chartDonut) chartDonut.destroy();
+  chartDonut = new Chart(document.getElementById('chartDonut').getContext('2d'),{
+    type:'doughnut',
+    data:{ labels:['Masuk','Keluar'], datasets:[{data:[totalIn||1,totalOut||0], backgroundColor:['#059669','#dc2626'], borderWidth:0, hoverOffset:6}] },
+    options:{ plugins:{legend:{display:false}}, cutout:'72%', responsive:true, maintainAspectRatio:true }
+  });
+}
+
+function fmtTgl(s) {
+  if(!s) return '';
+  const d=new Date(s+'T00:00:00');
+  return d.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+}
+
+// ────────────────────────────────────────────────
+//  RIWAYAT
+// ────────────────────────────────────────────────
+function initRiwayatFilters() {
+  const years  = [...new Set(transactions.map(t=>new Date(t.tanggal).getFullYear()))].sort((a,b)=>b-a);
+  const sy=document.getElementById('f-tahun');
+  sy.innerHTML='<option value="">Semua</option>'+years.map(y=>`<option>${y}</option>`).join('');
+  const sb=document.getElementById('f-bulan');
+  sb.innerHTML='<option value="">Semua</option>'+months.map((m,i)=>`<option value="${i}">${m}</option>`).join('');
+}
+
+function renderRiwayat() {
+  const tipe  = document.getElementById('f-tipe').value;
+  const bulan = document.getElementById('f-bulan').value;
+  const tahun = document.getElementById('f-tahun').value;
+  const cari  = document.getElementById('f-cari').value.toLowerCase();
+
+  let data = [...transactions].filter(t=>{
+    const d=new Date(t.tanggal);
+    return (!tipe||t.tipe===tipe)
+      && (bulan===''||d.getMonth()===+bulan)
+      && (!tahun||d.getFullYear()===+tahun)
+      && (!cari||t.keterangan.toLowerCase().includes(cari)||t.kategori.toLowerCase().includes(cari));
+  }).sort((a,b)=>b.tanggal.localeCompare(a.tanggal));
+
+  const tbody = document.getElementById('tbody-riwayat');
+  if(data.length===0) {
+    tbody.innerHTML='<tr><td colspan="6" class="text-center text-blue-300 py-10">Tidak ada data</td></tr>';
+    document.getElementById('riwayat-summary').innerHTML='';
+    return;
+  }
+  tbody.innerHTML = data.map(t=>`
+    <tr>
+      <td class="text-blue-600 text-xs">${fmtTgl(t.tanggal)}</td>
+      <td><span class="${t.tipe==='masuk'?'badge-in':'badge-out'}">${t.tipe==='masuk'?'Masuk':'Keluar'}</span></td>
+      <td>${t.kategori}</td>
+      <td class="text-blue-700">${t.keterangan||'-'}</td>
+      <td class="text-right font-semibold ${t.tipe==='masuk'?'text-emerald-600':'text-red-500'}">${fmt(t.jumlah)}</td>
+      <td><button class="btn-danger" onclick="hapus(${t.id})">Hapus</button></td>
+    </tr>`).join('');
+
+  const sumIn  = data.filter(t=>t.tipe==='masuk').reduce((a,t)=>a+t.jumlah,0);
+  const sumOut = data.filter(t=>t.tipe==='keluar').reduce((a,t)=>a+t.jumlah,0);
+  document.getElementById('riwayat-summary').innerHTML=`
+    <span>Total: <b>${data.length}</b> transaksi</span>
+    <span class="text-emerald-600">Masuk: <b>${fmt(sumIn)}</b></span>
+    <span class="text-red-500">Keluar: <b>${fmt(sumOut)}</b></span>
+    <span class="text-blue-700">Selisih: <b>${fmt(sumIn-sumOut)}</b></span>`;
+}
+
+function hapus(id) {
+  if(!confirm('Hapus transaksi ini?')) return;
+  transactions = transactions.filter(t=>t.id!==id);
+  save(); renderRiwayat(); renderDashboard(); toast('✓ Transaksi dihapus');
+}
+
+// ────────────────────────────────────────────────
+//  REKAP BULANAN
+// ────────────────────────────────────────────────
+let chartRekap;
+function initRekapFilter() {
+  const years=[...new Set(transactions.map(t=>new Date(t.tanggal).getFullYear()))].sort((a,b)=>b-a);
+  if(years.length===0) years.push(new Date().getFullYear());
+  const sel=document.getElementById('rekap-tahun');
+  sel.innerHTML=years.map(y=>`<option>${y}</option>`).join('');
+}
+
+function renderRekap() {
+  const tahun=+document.getElementById('rekap-tahun').value;
+  document.getElementById('rekap-tahun-label').textContent=tahun;
+  const grid=document.getElementById('rekap-grid');
+
+  const monthData=months.map((m,i)=>{
+    const mx=transactions.filter(t=>{ const d=new Date(t.tanggal); return d.getFullYear()===tahun&&d.getMonth()===i; });
+    const mIn=mx.filter(t=>t.tipe==='masuk').reduce((a,t)=>a+t.jumlah,0);
+    const mOut=mx.filter(t=>t.tipe==='keluar').reduce((a,t)=>a+t.jumlah,0);
+    return {m,i,mIn,mOut,cnt:mx.length,net:mIn-mOut};
+  });
+
+  const hasData=monthData.some(d=>d.cnt>0);
+  if(!hasData) {
+    grid.innerHTML='<div class="glass p-8 text-center text-blue-300 col-span-full">Tidak ada data untuk tahun '+tahun+'</div>';
+    if(chartRekap){chartRekap.destroy();chartRekap=null;}
+    return;
+  }
+
+  const maxIn=Math.max(...monthData.map(d=>d.mIn),1);
+  grid.innerHTML=monthData.map(d=>`
+    <div class="glass p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-display text-sm text-blue-800">${d.m}</span>
+        <span class="text-xs ${d.net>=0?'text-emerald-600':'text-red-500'} font-semibold">${d.net>=0?'+':''}${fmt(d.net)}</span>
+      </div>
+      <div class="space-y-2 mb-3">
+        <div class="flex justify-between text-xs"><span class="text-blue-400">Masuk</span><span class="text-emerald-600 font-semibold">${fmt(d.mIn)}</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:${(d.mIn/maxIn*100).toFixed(1)}%"></div></div>
+        <div class="flex justify-between text-xs"><span class="text-blue-400">Keluar</span><span class="text-red-500 font-semibold">${fmt(d.mOut)}</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:${(d.mOut/maxIn*100).toFixed(1)}%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+      </div>
+      <div class="text-xs text-blue-300">${d.cnt} transaksi</div>
+    </div>`).join('');
+
+  if(chartRekap) chartRekap.destroy();
+  chartRekap=new Chart(document.getElementById('chartRekap').getContext('2d'),{
+    type:'line',
+    data:{labels:months.map(m=>m.slice(0,3)),datasets:[
+      {label:'Masuk',data:monthData.map(d=>d.mIn),borderColor:'#059669',backgroundColor:'rgba(5,150,105,.08)',tension:.4,fill:true,pointBackgroundColor:'#059669'},
+      {label:'Keluar',data:monthData.map(d=>d.mOut),borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.08)',tension:.4,fill:true,pointBackgroundColor:'#dc2626'}
+    ]},
+    options:{plugins:{legend:{labels:{font:{family:'DM Sans'},boxRadius:5}}},scales:{y:{ticks:{callback:v=>'Rp'+v.toLocaleString('id-ID'),font:{family:'DM Sans',size:11}},grid:{color:'rgba(148,187,255,.15)'}},x:{ticks:{font:{family:'DM Sans',size:11}},grid:{display:false}}},responsive:true,maintainAspectRatio:true}
+  });
+}
+
+// ────────────────────────────────────────────────
+//  GRAFIK
+// ────────────────────────────────────────────────
+let cKat, cLine, cKatIn;
+function renderGrafik() {
+  // Kategori keluar
+  const katOut={};
+  transactions.filter(t=>t.tipe==='keluar').forEach(t=>{ katOut[t.kategori]=(katOut[t.kategori]||0)+t.jumlah; });
+  const kOut=Object.entries(katOut).sort((a,b)=>b[1]-a[1]);
+
+  if(cKat) cKat.destroy();
+  cKat=new Chart(document.getElementById('chartKategori').getContext('2d'),{
+    type:'bar',
+    data:{labels:kOut.map(k=>k[0]),datasets:[{label:'Pengeluaran',data:kOut.map(k=>k[1]),
+      backgroundColor:['#dc2626','#f87171','#fca5a5','#fecaca','#ef4444','#b91c1c','#7f1d1d','#fee2e2','#fde8e8'],
+      borderRadius:8,borderSkipped:false}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'Rp'+v.toLocaleString('id-ID'),font:{family:'DM Sans',size:10}},grid:{color:'rgba(148,187,255,.15)'}},y:{ticks:{font:{family:'DM Sans',size:11}},grid:{display:false}}},responsive:true,maintainAspectRatio:true}
+  });
+
+  // Line kumulatif
+  const sorted=[...transactions].sort((a,b)=>a.tanggal.localeCompare(b.tanggal));
+  let cum=0;
+  const lineLabels=[], lineData=[];
+  sorted.forEach(t=>{
+    cum += t.tipe==='masuk'?t.jumlah:-t.jumlah;
+    lineLabels.push(fmtTgl(t.tanggal));
+    lineData.push(cum);
+  });
+  if(cLine) cLine.destroy();
+  cLine=new Chart(document.getElementById('chartLine').getContext('2d'),{
+    type:'line',
+    data:{labels:lineLabels,datasets:[{label:'Saldo',data:lineData,
+      borderColor:'#1a56db',backgroundColor:'rgba(26,86,219,.08)',tension:.4,fill:true,pointRadius:3,pointBackgroundColor:'#1a56db'}]},
+    options:{plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'Rp'+v.toLocaleString('id-ID'),font:{family:'DM Sans',size:10}},grid:{color:'rgba(148,187,255,.15)'}},x:{ticks:{display:false},grid:{display:false}}},responsive:true,maintainAspectRatio:true}
+  });
+
+  // Kategori masuk
+  const katIn={};
+  transactions.filter(t=>t.tipe==='masuk').forEach(t=>{ katIn[t.kategori]=(katIn[t.kategori]||0)+t.jumlah; });
+  const kIn=Object.entries(katIn).sort((a,b)=>b[1]-a[1]);
+  if(cKatIn) cKatIn.destroy();
+  cKatIn=new Chart(document.getElementById('chartKategoriIn').getContext('2d'),{
+    type:'bar',
+    data:{labels:kIn.map(k=>k[0]),datasets:[{label:'Pemasukan',data:kIn.map(k=>k[1]),
+      backgroundColor:['#059669','#10b981','#34d399','#6ee7b7','#a7f3d0','#d1fae5'],
+      borderRadius:8,borderSkipped:false}]},
+    options:{plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'Rp'+v.toLocaleString('id-ID'),font:{family:'DM Sans',size:11}},grid:{color:'rgba(148,187,255,.15)'}},x:{ticks:{font:{family:'DM Sans',size:11}},grid:{display:false}}},responsive:true,maintainAspectRatio:true}
+  });
+}
+
+// ────────────────────────────────────────────────
+//  LAPORAN HARIAN
+// ────────────────────────────────────────────────
+function initLaporan() {
+  document.getElementById('lap-tanggal').value = today();
+}
+
+function renderLaporan() {
+  const tgl=document.getElementById('lap-tanggal').value;
+  if(!tgl) return;
+  const data=transactions.filter(t=>t.tanggal===tgl);
+  const mIn=data.filter(t=>t.tipe==='masuk').reduce((a,t)=>a+t.jumlah,0);
+  const mOut=data.filter(t=>t.tipe==='keluar').reduce((a,t)=>a+t.jumlah,0);
+  const net=mIn-mOut;
+  document.getElementById('lap-in').textContent=fmt(mIn);
+  document.getElementById('lap-out').textContent=fmt(mOut);
+  const lapNet=document.getElementById('lap-net');
+  lapNet.textContent=fmt(net);
+  lapNet.style.color=net>=0?'#059669':'#dc2626';
+
+  const tbody=document.getElementById('lap-tbody');
+  if(data.length===0) {
+    tbody.innerHTML='<tr><td colspan="4" class="text-center text-blue-300 py-8">Tidak ada transaksi pada tanggal ini</td></tr>';
+    return;
+  }
+  tbody.innerHTML=data.map(t=>`
+    <tr>
+      <td><span class="${t.tipe==='masuk'?'badge-in':'badge-out'}">${t.tipe==='masuk'?'Masuk':'Keluar'}</span></td>
+      <td>${t.kategori}</td>
+      <td class="text-blue-700">${t.keterangan||'-'}</td>
+      <td class="text-right font-semibold ${t.tipe==='masuk'?'text-emerald-600':'text-red-500'}">${fmt(t.jumlah)}</td>
+    </tr>`).join('');
+}
+
+// ────────────────────────────────────────────────
+//  RESET
+// ────────────────────────────────────────────────
+function resetAll() {
+  if(!confirm('HAPUS SEMUA DATA? Tindakan ini tidak bisa dibatalkan!')) return;
+  transactions=[];
+  save();
+  renderDashboard();
+  toast('✓ Semua data berhasil dihapus');
+}
+
+// ────────────────────────────────────────────────
+//  SEED DATA (demo jika kosong)
+// ────────────────────────────────────────────────
+function seedDemo() {
+  const now=new Date();
+  const y=now.getFullYear(), m=now.getMonth();
+  const rnd=(min,max)=>Math.floor(Math.random()*(max-min)+min);
+  const tgl=(mo,d)=>`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const seeds=[
+    {tipe:'masuk',jumlah:8500000,kategori:'Gaji',keterangan:'Gaji Bulan Ini',tanggal:tgl(m,1)},
+    {tipe:'masuk',jumlah:2000000,kategori:'Freelance',keterangan:'Project Design',tanggal:tgl(m,5)},
+    {tipe:'keluar',jumlah:350000,kategori:'Makan & Minum',keterangan:'Belanja mingguan',tanggal:tgl(m,3)},
+    {tipe:'keluar',jumlah:450000,kategori:'Transport',keterangan:'Bensin + Tol',tanggal:tgl(m,7)},
+    {tipe:'keluar',jumlah:1200000,kategori:'Tagihan',keterangan:'Listrik & Air',tanggal:tgl(m,10)},
+    {tipe:'masuk',jumlah:500000,kategori:'Hadiah',keterangan:'Hadiah Ulang Tahun',tanggal:tgl(m,12)},
+    {tipe:'keluar',jumlah:800000,kategori:'Belanja',keterangan:'Baju & Sepatu',tanggal:tgl(m,15)},
+    {tipe:'keluar',jumlah:250000,kategori:'Hiburan',keterangan:'Nonton Bioskop',tanggal:tgl(m,18)},
+    {tipe:'masuk',jumlah:750000,kategori:'Investasi',keterangan:'Dividen Saham',tanggal:tgl(m-1<0?0:m-1,20)},
+    {tipe:'keluar',jumlah:600000,kategori:'Kesehatan',keterangan:'Vitamin & Obat',tanggal:tgl(m-1<0?0:m-1,22)},
+    {tipe:'masuk',jumlah:8500000,kategori:'Gaji',keterangan:'Gaji Bulan Lalu',tanggal:tgl(m-1<0?0:m-1,1)},
+    {tipe:'keluar',jumlah:1500000,kategori:'Pendidikan',keterangan:'Kursus Online',tanggal:tgl(m-1<0?0:m-1,8)},
+    {tipe:'keluar',jumlah:400000,kategori:'Makan & Minum',keterangan:'Restoran Keluarga',tanggal:tgl(m-2<0?0:m-2,14)},
+    {tipe:'masuk',jumlah:3000000,kategori:'Freelance',keterangan:'Website Client',tanggal:tgl(m-2<0?0:m-2,5)},
+    {tipe:'keluar',jumlah:2000000,kategori:'Tabungan',keterangan:'Dana Darurat',tanggal:tgl(m,20)},
+  ];
+  seeds.forEach((s,i)=>{ transactions.push({...s,id:Date.now()+i}); });
+  save();
+}
+
+// ────────────────────────────────────────────────
+//  INIT
+// ────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  lucide.createIcons();
+  load();
+  if(transactions.length===0) {
+    seedDemo();
+    toast('👋 Data demo dimuat. Mulai tambah transaksi Anda!');
+  }
+
+  // Set default date
+  document.getElementById('f-tanggal').value = today();
+  document.getElementById('page-date').textContent = todayFmt();
+
+  // Init kategori
+  setType('masuk');
+
+  renderDashboard();
+});
+</script>
+</body>
+</html>
